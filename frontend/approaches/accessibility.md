@@ -1,5 +1,8 @@
 # Accessibility
 
+Accessibility is not just about visually impaired people. It is about keyboard navigation as much as disability. Everyone, including people with temporary limitations like a broken mouse, needs to operate a site via keyboard. 
+Developing an accessible website involves proper semantic HTML structure, correct tagging, and logical nesting—technical details that are often overlooked during standard development.
+
 ## Accessible Website vs Version for Visually Impaired
 
 Creating a single, accessible main website based on modern WCAG princples is of high importaince and we are expected to consider accessibility requirements on all our projects wherever possible.
