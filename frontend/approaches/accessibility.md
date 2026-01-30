@@ -32,6 +32,10 @@ Thus, a single inclusive site is the best practice and legally sufficient. A sep
 - Compatibility with screen readers; proper labels for all site elements are necessary.
 
 ### Color
+#### Focus Management for Dynamic Content
+When opening a modal window, focus must move inside it and be trapped there until it is closed. After closing, focus must return to the triggering element. 
+
+When content updates dynamically (e.g., form submission message, loaded component), focus must be programmatically moved to the new content or an alert role must be used to notify screen readers. Crucial for SPAs, modals, and AJAX.
 
 - Avoid using color as the only visual means of conveying information or indicating an action; color should be combined with other identifiers (icons, explanatory text).
 - Sufficient color contrast.
@@ -73,3 +77,21 @@ Thus, a single inclusive site is the best practice and legally sufficient. A sep
 - Concise.
 - Unique.
 - Visible and located near the control.
+
+Use native HTML elements over ARIA where possible. ARIA is good for fixing semantic gaps in custom widgets (e.g., complex menus, tabs), but should not be used to replace proper HTML. 
+If ARIA is used, all aria-attributes must be correct, complete, and managed with JavaScript (e.g., aria-expanded, aria-controls).
+
+### Shift-Left Testing
+Accessibility must be integrated from the start and verified throughout development, not just at the end.
+
+#### Testing Methods
+1) Automated Testing
+
+Use tools like Axe, WAVE, or Lighthouse. Mind that automated tools are necessary but not enough.
+
+2) Manual keyboard testing
+
+The entire site must be navigable with only a keyboard (Tab, Shift+Tab, Enter, Space, Arrow keys).
+Screen reader testing: test with at least one screen reader (e.g., NVDA, VoiceOver).
+
+Test with browser zoom at 200%.
