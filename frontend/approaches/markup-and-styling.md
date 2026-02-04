@@ -1,9 +1,9 @@
-# Code style
+# Frontend CSS/Styling Guidelines
 
 ## Naming 
 
 ## _CSS_
-Use BEM methodology if there are no CSS modules or css-in-js on the project.
+Use [BEM](https://ru.bem.info/methodology/quick-start/) methodology if there are no CSS modules or css-in-js on the project.
 
 ```
 .block {
@@ -45,7 +45,7 @@ Don't overload BEM elements.
 If an element starts to contain two or more semantic attachments, it means that you most likely need to move such an element into a separate block.
 Do not forget that each block must live in its own separate file.
 
-![#f03c15](https://placehold.co/15x15/f03c15/f03c15.png) BAD:
+❌ BAD:
 ```navigation.scss
 .navigation {
     &__list {
@@ -74,7 +74,7 @@ Do not forget that each block must live in its own separate file.
 }
 ```
 
-![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) GOOD:
+👍 GOOD:
 ```
 navigation.scss
 .navigation {
@@ -112,7 +112,7 @@ Don't use heavy selectors unless you really need to.
 Don't use pure tags as part of a selector unless you really need to.
 If you need to use a heavy selector to solve a problem, you might need to simplify something.
 
-![#f03c15](https://placehold.co/15x15/f03c15/f03c15.png) BAD:
+❌ BAD:
 ```
 .block {
     $this: &;
@@ -127,7 +127,7 @@ If you need to use a heavy selector to solve a problem, you might need to simpli
 }
 ```
 
-![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) GOOD:
+👍 GOOD:
 ```
 .block {
     $this: &;
@@ -141,6 +141,8 @@ If you need to use a heavy selector to solve a problem, you might need to simpli
     }
 }
 ```
+
+Don't us **!important** directive unless you absolutely need to.
 
 # Hover and Transitions
 
@@ -166,17 +168,17 @@ Don't forget to add at least a simple transition for the active state. It will m
 ```
 
 
-![#f03c15](https://placehold.co/15x15/f03c15/f03c15.png) BAD:
+❌ BAD:
 ```
 .element {
     transition: all 0.5s ease;
 }
 ```
-![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) GOOD:
+👍 GOOD:
 
 ```
 .element {
-    transition: bacground-color 0.3s linear, color 0.3s linear, 
+    transition: background-color 0.3s linear, color 0.3s linear, 
 }
 ```
  
@@ -348,9 +350,123 @@ To use z-index locally, set the value of the parent (block) to zero and you safe
 ```
 
 If you cannot do without magic numbers, add a comment describing why you did it that way.
- 
+
 
 # Media: Images
+## Lazy Loading 
+Loading all images upfront is a bad practice, because it wastes bandwidth and slows down initial page load.
+```
+<img 
+  src="image.jpg"
+  loading="lazy"
+  alt="alt text"
+>
+```
+However, don't lazy load the following:
+1. Hero/first-viewport images
+2. Logos (small file size)
+3. Critical UI elements
+4. Images likely to be printed
+
+
+## Image alt text 
+Alt text for informative images should be convey meaning and give the context, it shouldn't be too generic or redundant. 
+
+❌ BAD (generic):
+```
+<img src="chart.jpg" alt="Chart">
+```
+
+❌ BAD (redundant):
+```
+<img src="button-submit.jpg" alt="Submit button">
+```
+
+👍 GOOD (gives context):
+```
+<img src="icon-search.svg"  alt="Search products">
+```
+
+👍 GOOD (complex image with description):
+```
+<img src="chart.jpg" alt="Company organizational structure">
+```
+
+Decorative images don't need an alt text, because they are purely visual, e.g. visual dividers, decorative icons with text labels, background patterns.
+
+❌ BAD (skipping alt entirely is an accessibility violation):
+```
+<img src="divider.png">
+```
+
+❌ BAD (meaningless text):
+```
+<img src="divider.png" alt="divider">
+```
+
+👍 GOOD (empty alt with role):
+```
+<img src="divider.png" alt="">
+```
+
+## No layout shift on load
+Layout shift occurs when visible elements move unexpectedly, causing a frustrating user experience.
+
+Specify *width* and *height*, or *aspect-ratio* in HTML:
+```
+<img 
+  src="product.jpg"
+  alt="Product image"
+  width="400"
+  height="300"
+  style="aspect-ratio: 400 / 300;"
+>
+```
+
+Provide *sizes* attribute for responsive images:
+```
+<img 
+  srcset="small.jpg 400w, large.jpg 800w"
+  sizes="(max-width: 600px) 100vw, 50vw"
+  src="small.jpg"
+  alt="..."
+  width="800"
+  height="600"
+>
+```
+
+CSS to prevent layout shift:
+1. Reserve space with *aspect-ratio*
+```
+.image-container {
+  position: relative;
+  width: 100%;
+  padding-bottom: 75%; // 4:3 aspect ratio (3/4 = 0.75)
+  
+  img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+```
+
+2. Modern *aspect-ratio* property
+```
+.image-wrapper {
+  aspect-ratio: 16 / 9; // width / height
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+```
+You can test CLS occurs in DevTools with network throttling and monitor Core Web Vitals in Lighthouse.
 
 # Responsive 
 
