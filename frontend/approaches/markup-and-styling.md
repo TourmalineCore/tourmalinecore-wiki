@@ -2,7 +2,7 @@
 
 ## Naming 
 
-## _CSS_
+### _CSS_
 Use [BEM](https://ru.bem.info/methodology/quick-start/) methodology if there are no CSS modules or css-in-js on the project.
 
 ```
@@ -107,7 +107,7 @@ navigation-list.scss
 
 
 
-## _CSS-selectors_
+### _CSS-selectors_
 Don't use heavy selectors unless you really need to.
 Don't use pure tags as part of a selector unless you really need to.
 If you need to use a heavy selector to solve a problem, you might need to simplify something.
@@ -144,16 +144,16 @@ If you need to use a heavy selector to solve a problem, you might need to simpli
 
 Don't us **!important** directive unless you absolutely need to.
 
-# Hover and Transitions
+## Hover and Transitions
 
-## Active state
+### Active state
 
 Make sure to add styles for the active state to interactive elements, such as buttons and links. If the designer didn't provide the necessary details, use your sense of beauty to indicate the active state by for example changing the color of a button or scaling an icon. And of course, ping the designer, let them take a look at your perspective and suggest their own.
 
 All in all, any clickable element must have an active state so that the user is aware that it can be interacted with. 
 cursor property: pointer; is also required for all clickable elements.
 
-## Transitions
+### Transitions
 Don't forget to add at least a simple transition for the active state. It will make things look much better than just an instant jerky switch.
 
 ```
@@ -183,9 +183,9 @@ Don't forget to add at least a simple transition for the active state. It will m
 ```
  
 
-# Layout
+## Layout
 
-## Box-sizing
+### Box-sizing
 to simplify the calculation of elements dimensions 
 ```
 *,
@@ -195,7 +195,7 @@ to simplify the calculation of elements dimensions
 }
 ```
 
-## Modal and PageScroll
+### Modal and PageScroll
 ```
 .html {
     position: relative;
@@ -222,7 +222,7 @@ to simplify the calculation of elements dimensions
 }
 ```
 
-## Container
+### Container
 To horizontally center the content
 ```
 .container {
@@ -240,7 +240,7 @@ To horizontally center the content
 }
 ```
 
-## Margins and paddings
+### Margins and paddings
 You should differentiate between the logic of margins and the logic of paddings. 
 For example, we have a list of cards in a row - it's worth wrapping each card into the element called  **"block__item"** that will get the outer spacings (margins), whereas the card itself will get the inner spacings (paddings).
  
@@ -268,7 +268,7 @@ For example, we have a list of cards in a row - it's worth wrapping each card in
 }
 ```
 
-## Component spacings
+### Component spacings
 
 In case you are using **components approach** on the project (and **expecially, if the components are managed in CMS**), make sure you take an effort to discuss the logic of vertical spacings between components together with the designer and come up with consistent rules that you will follow during the development. 
 Otherwise, you are guaranteed to get bugs that the spacings do not match the design because content managers are free to come up with any combination of components order.
@@ -307,15 +307,15 @@ Possible style rules may look like this:
 }
 ```
 
-# Magic
+## Magic
 
 Your code should not contain magic numbers, i.e. figures plucked from the air.
 
-## CSS Magic
+### CSS Magic
 
 All values that are reused in different parts of the project, especially systematically, should be stored in variables.scss.
 
-## Magical z-index
+### Magical z-index
 
 If you need to put an element on top of the entire application, create a scss variable for it and put it in the variables.scss file. No need to set extremely large values, use values no more than a thousand in increments of tens or hundreds. 
 
@@ -352,8 +352,8 @@ To use z-index locally, set the value of the parent (block) to zero and you safe
 If you cannot do without magic numbers, add a comment describing why you did it that way.
 
 
-# Media: Images
-## Lazy Loading 
+## Media: Images
+### Lazy Loading 
 Loading all images upfront is a bad practice, because it wastes bandwidth and slows down initial page load.
 ```
 <img 
@@ -368,8 +368,7 @@ However, don't lazy load the following:
 3. Critical UI elements
 4. Images likely to be printed
 
-
-## Image alt text 
+### Image alt text 
 Alt text for informative images should be convey meaning and give the context, it shouldn't be too generic or redundant. 
 
 ❌ BAD (generic):
@@ -409,7 +408,7 @@ Decorative images don't need an alt text, because they are purely visual, e.g. v
 <img src="divider.png" alt="">
 ```
 
-## No layout shift on load
+### No layout shift on load
 Layout shift occurs when visible elements move unexpectedly, causing a frustrating user experience.
 
 Specify *width* and *height*, or *aspect-ratio* in HTML:
@@ -468,9 +467,9 @@ CSS to prevent layout shift:
 ```
 You can test CLS occurs in DevTools with network throttling and monitor Core Web Vitals in Lighthouse.
 
-# Responsive 
+## Responsive 
 
-## Viewports
+### Viewports
 
 We support all viewports from 375 to 4k screens.
 But since there is rarely designs for 4k, you need to make sure that everything looks ok on them yourself. 
@@ -543,3 +542,80 @@ $desktop-xl-width: 1920px;
   }
 }
 ```
+
+## Handling SVG/icons 
+As a rule, we have external SVG files which are imported into the component. 
+However, it is possible to inline critical SVG icons right in the HTML (e.g. company logo).
+
+### Color Control Methods
+If you need to change the icon color in the CSS, e.g. on hover, avoid hardcoding it in the SVG itself:
+
+❌ BAD: Colors baked into SVG:
+```
+<svg width="24" height="24" viewBox="0 0 24 24">
+  <path fill="#007AFF" .../> 
+</svg
+```
+👍 GOOD (using currentColor):
+```
+<svg class="icon" width="24" height="24" viewBox="0 0 24 24">
+  <path fill="currentColor" .../>
+</svg>
+``` 
+
+Changing the SVG color in CSS:
+```
+.icon {
+  &:hover {
+    fill: $color-primary;
+  }
+}
+```
+
+If you are using monochrome icons and simple logos in UI, make sure (or ask the designer to fix it) to prepare SVG with only one path, avoiding multiple elements:
+
+❌ BAD:
+```
+<svg width="24" height="24" viewBox="0 0 24 24">
+  <circle cx="12" cy="12" r="8" fill="#007AFF"/>
+  <rect x="8" y="8" width="8" height="8" fill="#FF3B30"/>
+  <path d="M6 6L18 18" stroke="#000" stroke-width="2"/>
+</svg>
+```
+
+👍 GOOD (single continuous path element for entire icon):
+```
+<svg width="24" height="24" viewBox="0 0 24 24">
+  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+</svg>
+```
+
+Multiple elements need individual targeting in CSS, it adds complexity:</br>
+❌ BAD:
+```
+.multi-element-icon {
+  circle { fill: var(--icon-bg); }
+  line { stroke: var(--icon-line); }
+  rect { fill: var(--icon-square); }
+  
+  &:hover {
+    circle { fill: var(--icon-bg-hover); }
+    line { stroke: var(--icon-line-hover); }
+    ...
+  }
+}
+```
+
+Single path = single CSS property:</br>
+👍 GOOD:
+```
+.single-path-icon {
+  fill: var(--icon-color);
+  
+  &:hover {
+    fill: var(--icon-color-hover);
+  }
+}
+```
+
+However, multiple paths are necessary for multi-color icons, and for icons with animated parts with different animation timing or different hover states. This will affect performance, because the browser will have to parse multiple DOM nodes and execute multiple paint operations, so use it when you have a clear reason.
