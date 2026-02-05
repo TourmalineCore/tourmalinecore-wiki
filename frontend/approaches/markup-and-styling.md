@@ -1,6 +1,15 @@
 # Frontend CSS/Styling Guidelines
 
-## Naming 
+## Table of Contents
+1. [Naming Conventions](#naming-conventions)
+2. [Hover and Transitions](#hover-and-transitions)
+3. [Layout](#layout)
+4. [Magic Numbers](#magic-numbers)
+5. [Media](#media)
+6. [Responsive Approach](#responsive-approach)
+7. [Handling SVG/icons](#handling-svg)
+
+<h2 id="naming-conventions">Naming</h3>
 
 ### _CSS_
 Use [BEM](https://ru.bem.info/methodology/quick-start/) methodology if there are no CSS modules or css-in-js on the project.
@@ -144,7 +153,7 @@ If you need to use a heavy selector to solve a problem, you might need to simpli
 
 Don't us **!important** directive unless you absolutely need to.
 
-## Hover and Transitions
+<h2 id="hover-and-transitions">Hover and Transitions</h2>
 
 ### Active state
 
@@ -307,7 +316,7 @@ Possible style rules may look like this:
 }
 ```
 
-## Magic
+<h2 id="magic-numbers">Magic Numbers</h2>
 
 Your code should not contain magic numbers, i.e. figures plucked from the air.
 
@@ -351,8 +360,8 @@ To use z-index locally, set the value of the parent (block) to zero and you safe
 
 If you cannot do without magic numbers, add a comment describing why you did it that way.
 
+<h2 id="media">Media</h2>
 
-## Media: Images
 ### Lazy Loading 
 Loading all images upfront is a bad practice, because it wastes bandwidth and slows down initial page load.
 ```
@@ -468,6 +477,7 @@ CSS to prevent layout shift:
 You can test CLS occurs in DevTools with network throttling and monitor Core Web Vitals in Lighthouse.
 
 ## Responsive 
+<h2 id="responsive-approach">Responsive Approach</h2>
 
 ### Viewports
 
@@ -543,7 +553,8 @@ $desktop-xl-width: 1920px;
 }
 ```
 
-## Handling SVG/icons 
+<h2 id="handling-svg">Handling SVG/icons</h2>
+
 As a rule, we have external SVG files which are imported into the component. 
 However, it is possible to inline critical SVG icons right in the HTML (e.g. company logo).
 
