@@ -53,11 +53,11 @@ Don't forget that your own MR Check list can differ from the example above. You 
 
 We usually work separately on different features in our team, but find it important to be in the loop of all tasks. So we've created our own practice of reviewing feature workflow all together after the work on this feature is done. A person who worked on it prepares a short summary about the most important moments of development and conducts a small demo to the team.
 
-### Update doca
+### Update docs
 
 If we think that the task is unique and has an unusial solution then we prefere to write down the short summary about the most important moments of development from the preveous point. We prefere to keep it in our Documentation repo.
 
-The main thing you should keep in mind while creating a new doca about a task is "Would this information help a person who don't know anything about the workflow of this feature to solve a similar task". Also, it is useful to put some most important pieces of code into the doca.
+The main thing you should keep in mind while creating a new document about a task is "Would this information help a person who don't know anything about the workflow of this feature to solve a similar task". Also, it is useful to put some most important pieces of code into the document.
 
 Sometimes you'll need to get back to the documentation repo and update it. The best way to do it is right after these changes appeared. After few days you can just forget about these changes.
 
