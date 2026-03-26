@@ -16,7 +16,7 @@ The next point follows from the previous one.
 
 The best way to escape from misalignment during development is to ask all questions that you have as soon as posible. It will help you to better understand customer and make more precise development.
 
-### Create separate threads in Discord for every ticket
+### Create separate threads in Team chat for every ticket
 
 Separate threads for each ticket can structure notes and save ticket information for future tasks. On first glance it may look like too much additional effort but in process of development you'll notice how your work process improves. 
 
