@@ -2,7 +2,7 @@
 
 ## What is this article about and for whom?
 
-Some may think that C is obsolete, but it isn’t! It is still relevant in embedded programming, when working on operating system kernels and device drivers. More than 50 years after its inception, it remains one of the most productive, efficient and minimalist programming languages. In this article, we have collected all the topics, tasks, literature and useful links related to C that we use while onboarding new colleagues. And we would like to share this information with those who are also interested in developing community C.
+Some may think that C is obsolete, but it isn’t! It is still relevant in embedded programming, when working on operating system kernels and device drivers. More than 50 years after its inception, it remains one of the most productive, efficient and minimalist programming languages. In this article, we have collected all the topics, tasks, literature and useful links related to C that we use while onboarding new colleagues. And we would like to share this information with those who are also interested in developing C community.
 
 ## Theory and practice
 
@@ -55,7 +55,7 @@ Task:
 Next, we'll take a closer look at some C fundamentals. To learn about basic data types, we recommend checking out Chapter 1 of "Essential C," the corresponding [section of the documentation](https://learn.microsoft.com/en-us/cpp/c-language/declarations-and-types?view=msvc-170), and our [mini-quiz](https://vk.com/wall-215630045_209) on C knowledge. At this point, it's worth learning the difference between different integer data types, how much memory they occupy, what happens when signed and unsigned variables overflow, and about real data types and how to compare them.
 
 Key things to know: 
-- Difference between ineger types;
+- Difference between integer types;
 - Cases of signed and unsigned variables overflow;
 - Real data types.
 
