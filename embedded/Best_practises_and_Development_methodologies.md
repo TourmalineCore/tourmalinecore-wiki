@@ -32,7 +32,7 @@ When the task is ready we prefer to send MR to our teammates for check in thread
 
 ### MR Check list
 
-But what about MR? How can we avoid fatal errors in main brunch?
+But what about MR? How can we avoid fatal errors in main branch?
 
 Before send MR to review to the customer's side it is important to check all items. Here is an example of MR Check list:
 
@@ -40,7 +40,7 @@ Before send MR to review to the customer's side it is important to check all ite
 * Check for code style errors if it is important on your project;
 * Remove commented code. If some part of the code in the functions you worked on was commented out a long time ago (you can check this in the git history), it is recommended to delete it;
 * Remove temporary debug messages (e.g. OLOLO);
-* Don't forget to pull Main brunch into your Feature brunch. If you have a complecated merge conflict then check twice that anything has broken after solving it;
+* Don't forget to pull Main branch into your Feature branch. If you have a complicated merge conflict then check twice that anything has broken after solving it;
 * Flash FW to device and test it;
 * Add documentation for the task you are closing: a general overview of the module you worked on, steps to resolve similar issues, etc.;
 * Assign someone from your command to review changes before sending MR to customer's side.
@@ -55,7 +55,7 @@ We usually work separately on different features in our team, but find it import
 
 ### Update docs
 
-If we think that the task is unique and has an unusial solution then we prefere to write down the short summary about the most important moments of development from the preveous point. We prefere to keep it in our Documentation repo.
+If we think that the task is unique and has an unusual solution then we prefer to write down the short summary about the most important moments of development from the preveous point. We prefere to keep it in our Documentation repo.
 
 The main thing you should keep in mind while creating a new document about a task is "Would this information help a person who don't know anything about the workflow of this feature to solve a similar task". Also, it is useful to put some most important pieces of code into the document.
 
@@ -67,4 +67,4 @@ For better overall mood of team members we created several side activities that 
 
 * Weekly hotkey cheat sheet. We choose new for us hotkeys and trying to use them in every suitable situation;
 * Meme lotery. We print our favourite memes and put them into a hat. Once a day/week we take a meme out of the hat one by one. Also we have meme wall, we put there our favourite pictures;
-* Letter spinning wheel. We send weekly letters to our customer about tasks from last week.We prefer to choose a person who will write this letter by spinning wheel with names of teammates, who wins - writes a letter! 
+* Letter spinning wheel. We send weekly letters to our customer about tasks from last week. We prefer to choose a person who will write this letter by spinning wheel with names of teammates, who wins - writes a letter! 
