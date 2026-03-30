@@ -22,11 +22,11 @@ Separate threads for each ticket can structure notes and save ticket information
 
 You can easily refresh in mind what you were doing before weekend, review what your colleague has done on last week.
 
-These small notes in thread can help you to develop your own knowlage base that will contain all useful information. So you'll be able to rapidly find how particular feature was done two years ago by other person.
+These small notes in thread can help you to develop your own knowledge base that will contain all useful information. So you'll be able to rapidly find how particular feature was done two years ago by other person.
 
-Another topic for thread is TODO list. It is really helpful to mark all things that are done and needs to be done in the scope of your task. So you won't miss nothing.
+Another topic for thread is TODO list. It is really helpful to mark all things that are done and needs to be done in the scope of your task. So you won't miss anything.
 
-It is necessary to be consistent in this question, so don't foret to update these threads every day or after every step of development. 
+It is necessary to be consistent in this question, so don't forget to update these threads every day or after every step of development. 
 
 When the task is ready we prefer to send MR to our teammates for check in threads as well. When someone reviews your code he can notice some mistakes that you've missed. Only after that we send our MR to the customer and mark in Discord thread that this task is done ✅.
 
