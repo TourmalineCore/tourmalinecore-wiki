@@ -621,7 +621,9 @@ std::shared_ptr<odb::database> DbConnection::get()
 }
 ```
 
-You can then easily use this class instance in commands and queries as shown in the following example:
+## Usage
+
+You can then easily use DbConnection class instance in commands and queries as shown in the following example:
 
 ```cpp
 // to-do-query.h
