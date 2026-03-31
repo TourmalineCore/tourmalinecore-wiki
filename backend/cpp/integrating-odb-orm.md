@@ -3,6 +3,17 @@
 
 ODB is an open-source, cross-platform, and cross-database object-relational mapping (ORM) system for C++. It allows you to persist C++ objects in a relational database without working directly with tables, columns, or SQL and without writing mapping code by hand.
 
+<!-- TOC start (generated with https://github.com/derlin/bitdowntoc) -->
+   * [Why ODB?](#why-odb)
+   * [Integrate into Project](#integrate-into-project)
+      + [With deb Package](#with-deb-package)
+      + [With Conan Package Manager](#with-conan-package-manager)
+   * [Describing Models](#describing-models)
+   * [Generating Support Files](#generating-support-files)
+   * [Database Connector](#database-connector)
+   * [Usage](#usage)
+   * [References](#references)
+<!-- TOC end -->
 
 ## Why ODB?
 
