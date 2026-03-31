@@ -1,0 +1,480 @@
+# ODB as ORM for cpp backend project
+ODB — это открытая, кросс-платформенная и кросс-СУБД система объектно-реляционного отображения (ORM) для языка C++. Она позволяет сохранять C++ объекты в реляционную базу данных без работы с таблицами, столбцами или SQL и без ручного написания маппинг-кода.
+## Why ODB?
+Its better described in [to-dos-api-cpp](https://github.com/TourmalineCore/to-dos-api-cpp/blob/master/docs/technologies.md#orm) repository.
+## Integrate into project
+
+### With deb package
+In case downloading builded package, here avaliable only for debian based systems and on x86-64 architecture.
+Download avaliable from [here](https://www.codesynthesis.com/download/odb/2.5.0/debian/debian12/x86_64/). 
+Just pick base [libodb_2.5.0-0~ubuntu22.04_amd64.deb](https://www.codesynthesis.com/download/odb/2.5.0/ubuntu/ubuntu22.04/x86_64/libodb_2.5.0-0~ubuntu22.04_amd64.deb) package with dev version [libodb-dev_2.5.0-0~ubuntu22.04_amd64.deb](https://www.codesynthesis.com/download/odb/2.5.0/ubuntu/ubuntu22.04/x86_64/libodb-dev_2.5.0-0~ubuntu22.04_amd64.deb)
+And neccessary database driver, for example pgsql [libodb-pgsql_2.5.0-0~ubuntu22.04_amd64.deb](https://www.codesynthesis.com/download/odb/2.5.0/ubuntu/ubuntu22.04/x86_64/libodb-pgsql_2.5.0-0~ubuntu22.04_amd64.deb) also with dev version [libodb-pgsql-dev_2.5.0-0~ubuntu22.04_amd64.deb](https://www.codesynthesis.com/download/odb/2.5.0/ubuntu/ubuntu22.04/x86_64/libodb-pgsql-dev_2.5.0-0~ubuntu22.04_amd64.deb).
+
+And then install with dpkg: 
+```bash
+dpkg -i libodb_2.5.0-0~debian12_amd64.deb && \
+dpkg -i ibodb-dev_2.5.0-0~ubuntu22.04_amd64.deb && \
+dpkg -i libodb-pgsql_2.5.0-0~ubuntu22.04_amd64.deb && \
+dpkg -i libodb-pgsql-dev_2.5.0-0~ubuntu22.04_amd64.deb
+```
+
+To install packages into project you may use any project builder system (cmake, meson etc.). But for example we will use cmake system.
+So need to add into `CMakeLists.txt` of project add some directives. 
+```cmake
+target_link_libraries(${YOUR_PROJECT_TARGET} PUBLIC 
+  odb odb-pgsql
+)
+```
+
+### With conan package manager
+> We are currently preparing a recipe for [conan-center-index](https://github.com/conan-io/conan-center-index) for automatic build, and if the recipe is successfully added, this option will be much easier.
+
+> Instaling conan into project describet [here](backend/package-manager-conan.md).
+
+The first need to create conan `local-recipes-index`. For that create folder `deps` in directory of your project and create in `deps` folder that structure:
+```bash
+.
+└── recipes
+    ├── libodb
+    │   ├── all
+    │   │   └── conanfile.py
+    │   └── config.yml
+    └── libodb-pgsql
+        ├── all
+        │   └── conanfile.py
+        └── config.yml
+```
+
+In `config.yml` place that config: 
+```yml
+versions:
+  "2.5.0": # version of libodb*
+    folder: all
+```
+
+In `conanfile.py` of libodb that config:
+
+<details>
+<summary>Content of deps/recipes/libodb/all/conanfile.py</summary>
+
+```python
+import os
+import textwrap
+from conan import ConanFile
+from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
+from conan.tools.files import get, save, rmdir
+
+
+class LibOdbConan(ConanFile):
+    name = "libodb"
+    version = "2.5.0"
+    description = "ODB C++ ORM — core runtime library"
+    license = "GPL-2.0-only"
+    homepage = "https://www.codesynthesis.com/products/odb/"
+    topics = ("odb", "orm", "database", "c++")
+
+    settings = "os", "compiler", "build_type", "arch"
+    options  = {"shared": [True, False], "fPIC": [True, False]}
+    default_options = {"shared": False, "fPIC": True}
+
+    def configure(self):
+        if self.options.shared:
+            self.options.rm_safe("fPIC")
+
+    def layout(self):
+        cmake_layout(self, src_folder="src")
+
+    def validate(self):
+        if self.settings.os != "Linux":
+            raise ConanInvalidConfiguration(
+                f"{self.ref} is supported only on Linux"
+            )
+        try:
+            with open("/etc/os-release") as f:
+                info = dict(
+                    line.strip().split("=", 1)
+                    for line in f if "=" in line
+                )
+            distro  = info.get("ID", "").strip('"')
+            version = info.get("VERSION_ID", "").strip('"')
+            if distro != "ubuntu" or version != "22.04":
+                raise ConanInvalidConfiguration(
+                    f"{self.ref} is supported only on Ubuntu 22.04 "
+                    f"(detected: {distro} {version})"
+                )
+        except FileNotFoundError:
+            raise ConanInvalidConfiguration(
+                f"{self.ref} requires Ubuntu 22.04 (/etc/os-release not found)"
+            )
+
+    def source(self):
+        get(
+            self,
+            url=f"https://www.codesynthesis.com/download/odb/{self.version}/libodb-{self.version}.tar.gz",
+            sha256="700038a73c6cbead011129b15030b7cdd3f73510b687f2c4504808df4230441b",  # replace hash if you changing sources
+            strip_root=True,
+        )
+        self._inject_cmake()
+
+    def _inject_cmake(self):
+        major = self.version.split(".")[0]
+        cmake = textwrap.dedent(f"""\
+            cmake_minimum_required(VERSION 3.15)
+            project(libodb VERSION {self.version} LANGUAGES CXX)
+
+            file(GLOB          ODB_SOURCES         "odb/*.cxx")
+            file(GLOB_RECURSE  ODB_DETAILS_SOURCES "odb/details/*.cxx")
+
+            add_library(odb
+                ${{ODB_SOURCES}}
+                ${{ODB_DETAILS_SOURCES}}
+            )
+
+            target_include_directories(odb PUBLIC
+                $<BUILD_INTERFACE:${{CMAKE_CURRENT_SOURCE_DIR}}>
+                $<INSTALL_INTERFACE:include>
+            )
+
+            target_compile_features(odb PUBLIC cxx_std_11)
+
+            find_package(Threads REQUIRED)
+            target_compile_definitions(odb PUBLIC ODB_THREADS_POSIX)
+            target_link_libraries(odb PUBLIC Threads::Threads)
+
+            set_target_properties(odb PROPERTIES
+                VERSION   {self.version}
+                SOVERSION {major}
+            )
+
+            install(TARGETS odb
+                ARCHIVE DESTINATION lib
+                LIBRARY DESTINATION lib
+                RUNTIME DESTINATION bin
+            )
+            install(DIRECTORY odb/
+                DESTINATION include/odb
+                FILES_MATCHING
+                    PATTERN "*.hxx"
+                    PATTERN "*.ixx"
+                    PATTERN "*.txx"
+                    PATTERN "*.h"
+            )
+        """)
+        save(self, os.path.join(self.source_folder, "CMakeLists.txt"), cmake)
+
+    def generate(self):
+        tc = CMakeToolchain(self)
+        tc.generate()
+
+    def build(self):
+        cmake = CMake(self)
+        cmake.configure()
+        cmake.build()
+
+    def package(self):
+        cmake = CMake(self)
+        cmake.install()
+        rmdir(self, os.path.join(self.package_folder, "lib", "pkgconfig"))
+        rmdir(self, os.path.join(self.package_folder, "share"))
+
+    def package_info(self):
+        self.cpp_info.libs = ["odb"]
+        self.cpp_info.system_libs = ["pthread"]
+        self.cpp_info.set_property("cmake_target_name", "libodb::libodb")
+        self.cpp_info.set_property("pkg_config_name",   "libodb")
+
+```
+</details>
+
+In `conanfile.py` of libodb-pgsqpl that config:
+
+<details>
+<summary>Content of deps/recipes/libodb-pgsql/all/conanfile.py</summary>
+
+```python
+import os
+import textwrap
+from conan import ConanFile
+from conan.errors import ConanInvalidConfiguration
+from conan.tools.cmake import CMake, CMakeToolchain, CMakeDeps, cmake_layout
+from conan.tools.files import get, save, rmdir
+
+class LibOdbPgsqlConan(ConanFile):
+    name = "libodb-pgsql"
+    version = "2.5.0"
+    license = "GPL-2.0-only"
+    homepage = "https://www.codesynthesis.com/products/odb/"
+    topics = ("odb", "orm", "database", "c++")
+
+    settings = "os", "compiler", "build_type", "arch"
+    options  = {"shared": [True, False], "fPIC": [True, False]}
+    default_options = {"shared": False, "fPIC": True}
+
+    def config_options(self):
+        pass
+
+    def configure(self):
+        if self.options.shared:
+            self.options.rm_safe("fPIC")
+
+    def layout(self):
+        cmake_layout(self, src_folder="src")
+
+    def validate(self):
+        if self.settings.os != "Linux":
+            raise ConanInvalidConfiguration(
+                f"{self.ref} is supported only on Linux"
+            )
+        try:
+            with open("/etc/os-release") as f:
+                info = dict(
+                    line.strip().split("=", 1)
+                    for line in f if "=" in line
+                )
+            distro  = info.get("ID", "").strip('"')
+            version = info.get("VERSION_ID", "").strip('"')
+            if distro != "ubuntu" or version != "22.04":
+                raise ConanInvalidConfiguration(
+                    f"{self.ref} is supported only on Ubuntu 22.04 "
+                    f"(detected: {distro} {version})"
+                )
+        except FileNotFoundError:
+            raise ConanInvalidConfiguration(
+                f"{self.ref} requires Ubuntu 22.04 (/etc/os-release not found)"
+            )
+
+    def requirements(self):
+        self.requires("libodb/2.5.0")
+        self.requires("libpq/17.7")
+
+    def source(self):
+        get(
+            self,
+            url=f"https://www.codesynthesis.com/download/odb/{self.version}/libodb-pgsql-{self.version}.tar.gz",
+            sha256="f6e63db4a2f77604f48115f64c74a5854ca20f03f208568966693e95712a3e17", # replace hash if you changing sources
+            strip_root=True,
+        )
+        self._inject_cmake()
+
+    def _inject_cmake(self):
+        major = self.version.split(".")[0]
+        cmake = textwrap.dedent(f"""\
+            cmake_minimum_required(VERSION 3.15)
+            project(odb-pgsql VERSION {self.version} LANGUAGES CXX)
+
+            find_package(libodb     REQUIRED CONFIG)
+            find_package(PostgreSQL REQUIRED CONFIG)
+
+            file(GLOB ODB_SOURCES "odb/pgsql/*.cxx")
+
+            file(GLOB ODB_PREGENERATED_SOURCES
+                "odb/pgsql/details/pregenerated/odb/pgsql/details/*.cxx"
+            )
+
+            add_library(odb-pgsql
+                ${{ODB_SOURCES}}
+                ${{ODB_PREGENERATED_SOURCES}}
+            )
+
+            target_include_directories(odb-pgsql PUBLIC
+                $<BUILD_INTERFACE:${{CMAKE_CURRENT_SOURCE_DIR}}>
+                $<BUILD_INTERFACE:${{CMAKE_CURRENT_SOURCE_DIR}}/odb/pgsql/details/pregenerated>
+                $<INSTALL_INTERFACE:include>
+            )
+
+            target_compile_features(odb-pgsql PUBLIC cxx_std_11)
+
+            target_link_libraries(odb-pgsql PUBLIC
+                libodb::libodb
+                PostgreSQL::PostgreSQL
+            )
+
+            set_target_properties(odb-pgsql PROPERTIES
+                VERSION   {self.version}
+                SOVERSION {major}
+                POSITION_INDEPENDENT_CODE ON
+            )
+
+            install(TARGETS odb-pgsql
+                ARCHIVE DESTINATION lib
+                LIBRARY DESTINATION lib
+                RUNTIME DESTINATION bin
+            )
+
+            install(DIRECTORY odb/pgsql
+                DESTINATION include/odb
+                FILES_MATCHING
+                    PATTERN "*.hxx"
+                    PATTERN "*.ixx"
+                    PATTERN "*.txx"
+                    PATTERN "*.h"
+                PATTERN "pregenerated" EXCLUDE
+            )
+
+            install(DIRECTORY odb/pgsql/details/pregenerated/odb/pgsql/details
+                DESTINATION include/odb/pgsql
+                FILES_MATCHING
+                    PATTERN "*.hxx"
+                    PATTERN "*.ixx"
+            )
+        """)
+        save(self, os.path.join(self.source_folder, "CMakeLists.txt"), cmake)
+
+    def generate(self):
+        tc = CMakeToolchain(self)
+        tc.generate()
+
+        deps = CMakeDeps(self)
+        deps.generate()
+
+    def build(self):
+        cmake = CMake(self)
+        cmake.configure()
+        cmake.build()
+
+    def package(self):
+        cmake = CMake(self)
+        cmake.install()
+        rmdir(self, os.path.join(self.package_folder, "lib", "pkgconfig"))
+        rmdir(self, os.path.join(self.package_folder, "share"))
+
+    def package_info(self):
+        self.cpp_info.libs = ["odb-pgsql"]
+        self.cpp_info.requires = [
+            "libodb::libodb",
+            "libpq::pq",
+        ]
+        self.cpp_info.set_property("cmake_target_name", "libodb-pgsql::libodb-pgsql")
+        self.cpp_info.set_property("pkg_config_name",   "libodb-pgsql")
+
+```
+</details>
+
+After filling conanfile of dependencies need to add local-recipes-index by command `conan remote add local-recipes ./deps --type=local-recipes-index`.
+
+And add that packages into conanfile of your project:
+
+```python
+...
+def requirements(self):
+    ...
+    self.requires("libodb/2.5.0")
+    self.requires("libodb-pgsql/2.5.0")
+...
+```
+
+The last what needed to add its derectives into `CMakeLists.txt` of your project:
+
+```cmake
+...
+
+find_package(libodb REQUIRED)
+find_package(libodb-pgsql REQUIRED)
+
+target_link_libraries(${YOUR_PROJECT_TARGET} PUBLIC 
+  ...
+  libodb::libodb
+  libodb-pgsql::libodb-pgsql
+)
+...
+
+```
+
+## Describing models
+
+Модели описываются как обычные C++ классы с добавлением `#pragma ..` директив. ODB использует эти прагмы как инструкции для кодогенерации.
+
+Минимальный пример модели:
+
+<details>
+<summary>Example of to-do model</summary>
+
+```cpp
+// to-do.h
+#pragma once
+
+#include <ctime>
+#include <odb/core.hxx>
+#include <odb/nullable.hxx>
+#include <string>
+
+#pragma db object table("todo")
+class ToDo
+{
+    public:
+    ToDo() = default;
+    ToDo(const std::string& name, std::time_t createdAtUtc)
+    : name_(name),
+      createdAtUtc_(createdAtUtc),
+      deletedAtUtc_()
+    {}
+
+    std::uint64_t id() const { return id_; }
+    const std::string& name() const { return name_; }
+    std::time_t createdAtUtc() const { return createdAtUtc_; }
+    const odb::nullable<std::time_t>& deletedAtUtc() const { return deletedAtUtc_; }
+
+    void name(const std::string& n) { name_ = n; }
+    void createdAtUtc(std::time_t t) { createdAtUtc_ = t; }
+    void deletedAtUtc(std::time_t t) { deletedAtUtc_ = t; }
+
+private:
+    friend class odb::access;
+
+#pragma db id auto
+    std::uint64_t id_;
+
+    std::string name_;
+#pragma db type("BIGINT")
+    std::time_t createdAtUtc_;
+
+#pragma db null
+#pragma db type("BIGINT")
+    odb::nullable<std::time_t> deletedAtUtc_;
+};
+```
+</details>
+
+## Generating support files
+
+This is required part of working ODB. For that you need to download CLI tool ODB by link [odb_2.5.0-0~ubuntu22.04_amd64.deb](https://www.codesynthesis.com/download/odb/2.5.0/ubuntu/ubuntu22.04/x86_64/odb_2.5.0-0~ubuntu22.04_amd64.deb) and then install it by `dpkg -i odb_2.5.0-0~ubuntu22.04_amd64.deb` command.
+
+For easy generate support files, please use that code snippet:
+
+```bash
+ROOT_DIR="$(pwd)" && \
+MODELS_DIR="$ROOT_DIR/path/to/your/models" && \
+ODB_OUT_DIR="$MODELS_DIR/odb-gen" && \
+find "$MODELS_DIR" -type f \( -name "*.hxx" -o -name "*.h" \) \
+    -not -path "$ODB_OUT_DIR/*" -print0 | \
+while IFS= read -r -d '' header; do
+    echo "  → $(basename "$header")"
+    odb --std c++20 -d pgsql --generate-query \
+        -o "$ODB_OUT_DIR" \
+        -I "$ROOT_DIR" \
+        "$header"
+done
+```
+
+<details>
+<summary>Case for conan way install ODB</summary>
+
+```bash
+ROOT_DIR="$(pwd)" && \
+MODELS_DIR="$ROOT_DIR/path/to/your/models" && \
+ODB_OUT_DIR="$MODELS_DIR/odb-gen" && \
+ODB_INCLUDE="$(conan cache path libodb/2.5.0)/../s/src" && \
+PGSQL_INCLUDE="$(conan cache path libodb-pgsql/2.5.0)/../s/src" && \
+find "$MODELS_DIR" -type f \( -name "*.hxx" -o -name "*.h" \) \
+    -not -path "$ODB_OUT_DIR/*" -print0 | \
+while IFS= read -r -d '' header; do
+    echo "  → $(basename "$header")"
+    odb --std c++20 -d pgsql --generate-query \
+        -o "$ODB_OUT_DIR" \
+        -I "$ODB_INCLUDE" \
+        -I "$PGSQL_INCLUDE" \
+        -I "$ROOT_DIR" \
+        "$header"
+done
+```
+</details>
