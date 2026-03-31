@@ -550,3 +550,138 @@ done
 </details>
 
 More about ODB CLI described in official [documentation](https://www.codesynthesis.com/products/odb/doc/odb.xhtml).
+
+## Database Connector
+
+Here is a quick way to create a database connection class:
+
+```cpp
+// db_connector.h
+#pragma once
+
+
+#include <memory>
+#include <odb/database.hxx>
+
+
+class DbConnection
+{
+public:
+    static std::shared_ptr<odb::database> get();
+
+
+private:
+    DbConnection() = default;
+    static std::shared_ptr<odb::database> instance_;
+};
+```
+
+```cpp
+// db_connector.cpp
+#include "db_connection.h"
+#include "../utils/app-config/app-config.h"
+
+
+#include <cstdlib>
+#include <stdexcept>
+
+
+#include <odb/pgsql/database.hxx>
+
+
+std::shared_ptr<odb::database> DbConnection::instance_ = nullptr;
+
+
+std::shared_ptr<odb::database> DbConnection::get()
+{
+    static std::once_flag flag;
+    std::call_once(
+        flag,
+        []()
+        {
+            auto& config = AppConfig::GetInstance();
+
+
+            const std::string host = "127.0.0.1";   // Host of database
+            const std::string port = "5432";        // Port of database;
+            const std::string user = "db_user";     // User of database;
+            const std::string password = "passwd";  // Users password
+            const std::string dbname = "default";   // Database name
+
+
+            std::string conn = "host=" + host + " port=" + port + " dbname=" + dbname + " user=" + user + " password=" + password;
+
+
+            instance_ = std::shared_ptr<odb::database>(new odb::pgsql::database(conn)); // Create DbConnection singletone instance
+        }
+    );
+
+
+    return instance_;
+}
+```
+
+You can then easily use this class instance in commands and queries as shown in the following example:
+
+```cpp
+// to-do-query.h
+#pragma once
+
+
+#include "data/models/to-do.h"
+#include <memory>
+#include <odb/database.hxx>
+#include <vector>
+
+
+class ToDoQueries
+{
+public:
+    ToDoQueries(odb::database& db)
+    : db_(db)
+    {}
+    std::shared_ptr<ToDo> get_todo_by_id(int id);
+
+
+private:
+    odb::database& db_;
+};
+```
+
+```cpp
+// to-do-query.cpp
+#include "to-do-query.h"
+#include "data/models/odb-gen/to-do-odb.hxx"
+#include <memory>
+#include <odb/transaction.hxx>
+std::shared_ptr<std::vector<ToDo>> ToDoQueries::get_all_todos()
+{
+    odb::transaction t(db_.begin()); // Open transaction on database
+
+
+    odb::result<ToDo> r = db_.query<ToDo>(odb::query<ToDo>()); // Requesting of all to-dos from database
+
+
+    auto todos = std::make_shared<std::vector<ToDo>>(); //
+    for (auto i = r.begin(); i != r.end(); ++i)         // Parse inner ODB structure on vector
+        todos->push_back(*i);                           //
+
+
+    t.commit(); // Close the transaction
+    return todos;
+}
+```
+
+For more details on working with ODB commands and queries, refer to the official documentation:
+
+- [Making objects persistent and other write operations](https://www.codesynthesis.com/products/odb/doc/manual.xhtml#3.8)
+- [Querying the Database](https://www.codesynthesis.com/products/odb/doc/manual.xhtml#4)
+
+***
+
+## References
+
+- [to-dos-api-cpp](https://github.com/TourmalineCore/to-dos-api-cpp)
+- [Creating a Conan file](https://docs.conan.io/2/reference/conanfile.html)
+- [Local Recipes Index Repository](https://docs.conan.io/2/devops/devops_local_recipes_index.html)
+- [ODB Manual](https://www.codesynthesis.com/products/odb/doc/manual.xhtml)
