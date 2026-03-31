@@ -1,16 +1,27 @@
-# ODB as ORM for cpp backend project
-ODB — это открытая, кросс-платформенная и кросс-СУБД система объектно-реляционного отображения (ORM) для языка C++. Она позволяет сохранять C++ объекты в реляционную базу данных без работы с таблицами, столбцами или SQL и без ручного написания маппинг-кода.
+
+# ODB as ORM for C++ Backend Project
+
+ODB is an open-source, cross-platform, and cross-database object-relational mapping (ORM) system for C++. It allows you to persist C++ objects in a relational database without working directly with tables, columns, or SQL and without writing mapping code by hand.
+
+
 ## Why ODB?
-Its better described in [to-dos-api-cpp](https://github.com/TourmalineCore/to-dos-api-cpp/blob/master/docs/technologies.md#orm) repository.
-## Integrate into project
 
-### With deb package
-In case downloading builded package, here avaliable only for debian based systems and on x86-64 architecture.
-Download avaliable from [here](https://www.codesynthesis.com/download/odb/2.5.0/debian/debian12/x86_64/). 
-Just pick base [libodb_2.5.0-0~ubuntu22.04_amd64.deb](https://www.codesynthesis.com/download/odb/2.5.0/ubuntu/ubuntu22.04/x86_64/libodb_2.5.0-0~ubuntu22.04_amd64.deb) package with dev version [libodb-dev_2.5.0-0~ubuntu22.04_amd64.deb](https://www.codesynthesis.com/download/odb/2.5.0/ubuntu/ubuntu22.04/x86_64/libodb-dev_2.5.0-0~ubuntu22.04_amd64.deb)
-And neccessary database driver, for example pgsql [libodb-pgsql_2.5.0-0~ubuntu22.04_amd64.deb](https://www.codesynthesis.com/download/odb/2.5.0/ubuntu/ubuntu22.04/x86_64/libodb-pgsql_2.5.0-0~ubuntu22.04_amd64.deb) also with dev version [libodb-pgsql-dev_2.5.0-0~ubuntu22.04_amd64.deb](https://www.codesynthesis.com/download/odb/2.5.0/ubuntu/ubuntu22.04/x86_64/libodb-pgsql-dev_2.5.0-0~ubuntu22.04_amd64.deb).
+It is better described in the [to-dos-api-cpp](https://github.com/TourmalineCore/to-dos-api-cpp/blob/master/docs/technologies.md#orm) repository.
 
-And then install with dpkg: 
+## Integrate into Project
+
+### With deb Package
+
+> When downloading a pre-built package, note that it is only available for Debian-based systems on the x86-64 architecture.
+
+Downloads are available [here](https://www.codesynthesis.com/download/odb/2.5.0/).
+
+Pick the base package [libodb_2.5.0-0~ubuntu22.04_amd64.deb](https://www.codesynthesis.com/download/odb/2.5.0/ubuntu/ubuntu22.04/x86_64/libodb_2.5.0-0~ubuntu22.04_amd64.deb) along with its dev version [libodb-dev_2.5.0-0~ubuntu22.04_amd64.deb](https://www.codesynthesis.com/download/odb/2.5.0/ubuntu/ubuntu22.04/x86_64/libodb-dev_2.5.0-0~ubuntu22.04_amd64.deb).
+
+Then pick the necessary database driver — for example, for PostgreSQL: [libodb-pgsql_2.5.0-0~ubuntu22.04_amd64.deb](https://www.codesynthesis.com/download/odb/2.5.0/ubuntu/ubuntu22.04/x86_64/libodb-pgsql_2.5.0-0~ubuntu22.04_amd64.deb) along with its dev version [libodb-pgsql-dev_2.5.0-0~ubuntu22.04_amd64.deb](https://www.codesynthesis.com/download/odb/2.5.0/ubuntu/ubuntu22.04/x86_64/libodb-pgsql-dev_2.5.0-0~ubuntu22.04_amd64.deb).
+
+Then install them with `dpkg`:
+
 ```bash
 dpkg -i libodb_2.5.0-0~debian12_amd64.deb && \
 dpkg -i ibodb-dev_2.5.0-0~ubuntu22.04_amd64.deb && \
@@ -18,20 +29,24 @@ dpkg -i libodb-pgsql_2.5.0-0~ubuntu22.04_amd64.deb && \
 dpkg -i libodb-pgsql-dev_2.5.0-0~ubuntu22.04_amd64.deb
 ```
 
-To install packages into project you may use any project builder system (cmake, meson etc.). But for example we will use cmake system.
-So need to add into `CMakeLists.txt` of project add some directives. 
+To link the packages into your project you may use any build system (CMake, Meson, etc.). As an example, we will use CMake.
+
+Add the following directives to your project's `CMakeLists.txt`:
+
 ```cmake
 target_link_libraries(${YOUR_PROJECT_TARGET} PUBLIC 
   odb odb-pgsql
 )
 ```
 
-### With conan package manager
-> We are currently preparing a recipe for [conan-center-index](https://github.com/conan-io/conan-center-index) for automatic build, and if the recipe is successfully added, this option will be much easier.
+### With Conan Package Manager
 
-> Instaling conan into project describet [here](backend/package-manager-conan.md).
+> We are currently preparing a recipe for [conan-center-index](https://github.com/conan-io/conan-center-index) for automatic builds. Once the recipe is successfully added, this option will be much simpler.
 
-The first need to create conan `local-recipes-index`. For that create folder `deps` in directory of your project and create in `deps` folder that structure:
+> Installing Conan into your project is described [here](backend/package-manager-conan.md).
+
+First, you need to create a Conan `local-recipes-index`. To do that, create a `deps` folder in your project's root directory and place the following structure inside it:
+
 ```bash
 .
 └── recipes
@@ -45,14 +60,15 @@ The first need to create conan `local-recipes-index`. For that create folder `de
         └── config.yml
 ```
 
-In `config.yml` place that config: 
+Place the following content in each `config.yml`:
+
 ```yml
 versions:
   "2.5.0": # version of libodb*
     folder: all
 ```
 
-In `conanfile.py` of libodb that config:
+For the `conanfile.py` of `libodb`:
 
 <details>
 <summary>Content of deps/recipes/libodb/all/conanfile.py</summary>
@@ -65,6 +81,7 @@ from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
 from conan.tools.files import get, save, rmdir
 
 
+
 class LibOdbConan(ConanFile):
     name = "libodb"
     version = "2.5.0"
@@ -73,16 +90,20 @@ class LibOdbConan(ConanFile):
     homepage = "https://www.codesynthesis.com/products/odb/"
     topics = ("odb", "orm", "database", "c++")
 
+
     settings = "os", "compiler", "build_type", "arch"
     options  = {"shared": [True, False], "fPIC": [True, False]}
     default_options = {"shared": False, "fPIC": True}
+
 
     def configure(self):
         if self.options.shared:
             self.options.rm_safe("fPIC")
 
+
     def layout(self):
         cmake_layout(self, src_folder="src")
+
 
     def validate(self):
         if self.settings.os != "Linux":
@@ -107,6 +128,7 @@ class LibOdbConan(ConanFile):
                 f"{self.ref} requires Ubuntu 22.04 (/etc/os-release not found)"
             )
 
+
     def source(self):
         get(
             self,
@@ -116,35 +138,43 @@ class LibOdbConan(ConanFile):
         )
         self._inject_cmake()
 
+
     def _inject_cmake(self):
         major = self.version.split(".")[0]
         cmake = textwrap.dedent(f"""\
             cmake_minimum_required(VERSION 3.15)
             project(libodb VERSION {self.version} LANGUAGES CXX)
 
+
             file(GLOB          ODB_SOURCES         "odb/*.cxx")
             file(GLOB_RECURSE  ODB_DETAILS_SOURCES "odb/details/*.cxx")
+
 
             add_library(odb
                 ${{ODB_SOURCES}}
                 ${{ODB_DETAILS_SOURCES}}
             )
 
+
             target_include_directories(odb PUBLIC
                 $<BUILD_INTERFACE:${{CMAKE_CURRENT_SOURCE_DIR}}>
                 $<INSTALL_INTERFACE:include>
             )
 
+
             target_compile_features(odb PUBLIC cxx_std_11)
+
 
             find_package(Threads REQUIRED)
             target_compile_definitions(odb PUBLIC ODB_THREADS_POSIX)
             target_link_libraries(odb PUBLIC Threads::Threads)
 
+
             set_target_properties(odb PROPERTIES
                 VERSION   {self.version}
                 SOVERSION {major}
             )
+
 
             install(TARGETS odb
                 ARCHIVE DESTINATION lib
@@ -162,14 +192,17 @@ class LibOdbConan(ConanFile):
         """)
         save(self, os.path.join(self.source_folder, "CMakeLists.txt"), cmake)
 
+
     def generate(self):
         tc = CMakeToolchain(self)
         tc.generate()
+
 
     def build(self):
         cmake = CMake(self)
         cmake.configure()
         cmake.build()
+
 
     def package(self):
         cmake = CMake(self)
@@ -177,16 +210,16 @@ class LibOdbConan(ConanFile):
         rmdir(self, os.path.join(self.package_folder, "lib", "pkgconfig"))
         rmdir(self, os.path.join(self.package_folder, "share"))
 
+
     def package_info(self):
         self.cpp_info.libs = ["odb"]
         self.cpp_info.system_libs = ["pthread"]
         self.cpp_info.set_property("cmake_target_name", "libodb::libodb")
         self.cpp_info.set_property("pkg_config_name",   "libodb")
-
 ```
 </details>
 
-In `conanfile.py` of libodb-pgsqpl that config:
+For the `conanfile.py` of `libodb-pgsql`:
 
 <details>
 <summary>Content of deps/recipes/libodb-pgsql/all/conanfile.py</summary>
@@ -199,6 +232,7 @@ from conan.errors import ConanInvalidConfiguration
 from conan.tools.cmake import CMake, CMakeToolchain, CMakeDeps, cmake_layout
 from conan.tools.files import get, save, rmdir
 
+
 class LibOdbPgsqlConan(ConanFile):
     name = "libodb-pgsql"
     version = "2.5.0"
@@ -206,19 +240,24 @@ class LibOdbPgsqlConan(ConanFile):
     homepage = "https://www.codesynthesis.com/products/odb/"
     topics = ("odb", "orm", "database", "c++")
 
+
     settings = "os", "compiler", "build_type", "arch"
     options  = {"shared": [True, False], "fPIC": [True, False]}
     default_options = {"shared": False, "fPIC": True}
 
+
     def config_options(self):
         pass
+
 
     def configure(self):
         if self.options.shared:
             self.options.rm_safe("fPIC")
 
+
     def layout(self):
         cmake_layout(self, src_folder="src")
+
 
     def validate(self):
         if self.settings.os != "Linux":
@@ -243,9 +282,11 @@ class LibOdbPgsqlConan(ConanFile):
                 f"{self.ref} requires Ubuntu 22.04 (/etc/os-release not found)"
             )
 
+
     def requirements(self):
         self.requires("libodb/2.5.0")
         self.requires("libpq/17.7")
+
 
     def source(self):
         get(
@@ -256,25 +297,31 @@ class LibOdbPgsqlConan(ConanFile):
         )
         self._inject_cmake()
 
+
     def _inject_cmake(self):
         major = self.version.split(".")[0]
         cmake = textwrap.dedent(f"""\
             cmake_minimum_required(VERSION 3.15)
             project(odb-pgsql VERSION {self.version} LANGUAGES CXX)
 
+
             find_package(libodb     REQUIRED CONFIG)
             find_package(PostgreSQL REQUIRED CONFIG)
 
+
             file(GLOB ODB_SOURCES "odb/pgsql/*.cxx")
+
 
             file(GLOB ODB_PREGENERATED_SOURCES
                 "odb/pgsql/details/pregenerated/odb/pgsql/details/*.cxx"
             )
 
+
             add_library(odb-pgsql
                 ${{ODB_SOURCES}}
                 ${{ODB_PREGENERATED_SOURCES}}
             )
+
 
             target_include_directories(odb-pgsql PUBLIC
                 $<BUILD_INTERFACE:${{CMAKE_CURRENT_SOURCE_DIR}}>
@@ -282,12 +329,15 @@ class LibOdbPgsqlConan(ConanFile):
                 $<INSTALL_INTERFACE:include>
             )
 
+
             target_compile_features(odb-pgsql PUBLIC cxx_std_11)
+
 
             target_link_libraries(odb-pgsql PUBLIC
                 libodb::libodb
                 PostgreSQL::PostgreSQL
             )
+
 
             set_target_properties(odb-pgsql PROPERTIES
                 VERSION   {self.version}
@@ -295,11 +345,13 @@ class LibOdbPgsqlConan(ConanFile):
                 POSITION_INDEPENDENT_CODE ON
             )
 
+
             install(TARGETS odb-pgsql
                 ARCHIVE DESTINATION lib
                 LIBRARY DESTINATION lib
                 RUNTIME DESTINATION bin
             )
+
 
             install(DIRECTORY odb/pgsql
                 DESTINATION include/odb
@@ -311,6 +363,7 @@ class LibOdbPgsqlConan(ConanFile):
                 PATTERN "pregenerated" EXCLUDE
             )
 
+
             install(DIRECTORY odb/pgsql/details/pregenerated/odb/pgsql/details
                 DESTINATION include/odb/pgsql
                 FILES_MATCHING
@@ -320,23 +373,28 @@ class LibOdbPgsqlConan(ConanFile):
         """)
         save(self, os.path.join(self.source_folder, "CMakeLists.txt"), cmake)
 
+
     def generate(self):
         tc = CMakeToolchain(self)
         tc.generate()
 
+
         deps = CMakeDeps(self)
         deps.generate()
+
 
     def build(self):
         cmake = CMake(self)
         cmake.configure()
         cmake.build()
 
+
     def package(self):
         cmake = CMake(self)
         cmake.install()
         rmdir(self, os.path.join(self.package_folder, "lib", "pkgconfig"))
         rmdir(self, os.path.join(self.package_folder, "share"))
+
 
     def package_info(self):
         self.cpp_info.libs = ["odb-pgsql"]
@@ -346,13 +404,16 @@ class LibOdbPgsqlConan(ConanFile):
         ]
         self.cpp_info.set_property("cmake_target_name", "libodb-pgsql::libodb-pgsql")
         self.cpp_info.set_property("pkg_config_name",   "libodb-pgsql")
-
 ```
 </details>
 
-After filling conanfile of dependencies need to add local-recipes-index by command `conan remote add local-recipes ./deps --type=local-recipes-index`.
+After filling in the recipe `conanfile.py` files, register the local recipes index with the following command:
 
-And add that packages into conanfile of your project:
+```bash
+conan remote add local-recipes ./deps --type=local-recipes-index
+```
+
+Then add the packages to your project's `conanfile.py`:
 
 ```python
 ...
@@ -363,7 +424,7 @@ def requirements(self):
 ...
 ```
 
-The last what needed to add its derectives into `CMakeLists.txt` of your project:
+Finally, add the following directives to your project's `CMakeLists.txt`:
 
 ```cmake
 ...
@@ -377,26 +438,27 @@ target_link_libraries(${YOUR_PROJECT_TARGET} PUBLIC
   libodb-pgsql::libodb-pgsql
 )
 ...
-
 ```
 
-## Describing models
+## Describing Models
 
-Модели описываются как обычные C++ классы с добавлением `#pragma ..` директив. ODB использует эти прагмы как инструкции для кодогенерации.
+Models are described as regular C++ classes annotated with `#pragma db` directives. ODB uses these pragmas as instructions for code generation.
 
-Минимальный пример модели:
+A minimal model example:
 
 <details>
-<summary>Example of to-do model</summary>
+<summary>Example of a to-do model</summary>
 
 ```cpp
 // to-do.h
 #pragma once
 
+
 #include <ctime>
 #include <odb/core.hxx>
 #include <odb/nullable.hxx>
 #include <string>
+
 
 #pragma db object table("todo")
 class ToDo
@@ -409,24 +471,30 @@ class ToDo
       deletedAtUtc_()
     {}
 
+
     std::uint64_t id() const { return id_; }
     const std::string& name() const { return name_; }
     std::time_t createdAtUtc() const { return createdAtUtc_; }
     const odb::nullable<std::time_t>& deletedAtUtc() const { return deletedAtUtc_; }
 
+
     void name(const std::string& n) { name_ = n; }
     void createdAtUtc(std::time_t t) { createdAtUtc_ = t; }
     void deletedAtUtc(std::time_t t) { deletedAtUtc_ = t; }
 
+
 private:
     friend class odb::access;
+
 
 #pragma db id auto
     std::uint64_t id_;
 
+
     std::string name_;
 #pragma db type("BIGINT")
     std::time_t createdAtUtc_;
+
 
 #pragma db null
 #pragma db type("BIGINT")
@@ -435,11 +503,13 @@ private:
 ```
 </details>
 
-## Generating support files
+More about models describing is writed in official [documentation](https://www.codesynthesis.com/products/odb/doc/manual.xhtml#3.2).
 
-This is required part of working ODB. For that you need to download CLI tool ODB by link [odb_2.5.0-0~ubuntu22.04_amd64.deb](https://www.codesynthesis.com/download/odb/2.5.0/ubuntu/ubuntu22.04/x86_64/odb_2.5.0-0~ubuntu22.04_amd64.deb) and then install it by `dpkg -i odb_2.5.0-0~ubuntu22.04_amd64.deb` command.
+## Generating Support Files
 
-For easy generate support files, please use that code snippet:
+Generating support files is a required step when working with ODB. First, download the ODB CLI tool from [odb_2.5.0-0~ubuntu22.04_amd64.deb](https://www.codesynthesis.com/download/odb/2.5.0/ubuntu/ubuntu22.04/x86_64/odb_2.5.0-0~ubuntu22.04_amd64.deb) and install it with `dpkg -i odb_2.5.0-0~ubuntu22.04_amd64.deb`
+
+To generate support files for all models at once, use the following script:
 
 ```bash
 ROOT_DIR="$(pwd)" && \
@@ -457,7 +527,7 @@ done
 ```
 
 <details>
-<summary>Case for conan way install ODB</summary>
+<summary>Variant for the Conan installation of ODB</summary>
 
 ```bash
 ROOT_DIR="$(pwd)" && \
@@ -478,3 +548,5 @@ while IFS= read -r -d '' header; do
 done
 ```
 </details>
+
+More about ODB CLI described in official [documentation](https://www.codesynthesis.com/products/odb/doc/odb.xhtml).
