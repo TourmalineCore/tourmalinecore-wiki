@@ -1,11 +1,11 @@
-# Migration with Alembic
+# Migrations with Alembic
 
-If your stack with framework doesent work with database migrations, you can use Alembic as migration layer to Database.
+If your framework or stack does not support database migrations, you can use Alembic as a migration layer for your database.
 
 ## Installing
 
-Here **python** enviroment is requriment for properly working of Alembic.
-So you need to instal **pip**:
+A **python** environment is required for Alembic to work properly.  
+So, you need to install **pip**:
 
 <details>
 <summary>Variant for Ubuntu systems</summary>
@@ -16,18 +16,19 @@ and
 
 <details>
 <summary>Variant for Windows systems</summary>
-Need to instal **python** first by the installer from [official site](https://www.python.org/downloads/).
-After installation puthon and if pip automaticly doesent installed, you need to download get-pip script and rin it.
-Here a [get-pip](https://bootstrap.pypa.io/get-pip.py) script, after downloading just run `py get-pip.py`.
+You need to install **python** first using the installer from the [official site](https://www.python.org/downloads/).
+After installation, if python and pip were not installed automatically, you need to download the get-pip script and run it.
+Here is the [get-pip](https://bootstrap.pypa.io/get-pip.py) script; after downloading it, just run `py get-pip.py`.
 
-In any issueses case please read https://github.com/pypa/pip/issues for your problem
+If you run into any issues, please check [https://github.com/pypa/pip/issues](https://github.com/pypa/pip/issues) for your problem.
 </details>
 
-Make sure that **pip** is installed and install alembic packages with `pip install alembic psycopg2-binary`.
+Make sure that **pip** is installed, then install the Alembic packages with `pip install alembic psycopg2-binary`.
 
 ## Configuration
 
-For properly working of Alembic, you need to create enviroment. Run these script in folder where you want to store all files with migrations `alembic init migrations`. In folder must created next tree:
+For Alembic to work properly, you need to create an environment. Run this script in the folder where you want to store all migration files: `alembic init migrations`. The following tree should be created in that folder:
+
 ```bash
 .
 ├── alembic.ini
@@ -38,9 +39,10 @@ For properly working of Alembic, you need to create enviroment. Run these script
     └── versions
 ```
 
-In file `alembic.ini` on 89 line you must see `sqlalchemy.url = driver://user:pass@localhost/dbname` it is need to replace with your connection string to database, for example `sqlalchemy.url = pgsql://postgress:postgress@localhost/dbname`.
+In the `alembic.ini` file, on line 89, you should see `sqlalchemy.url = driver://user:pass@localhost/dbname`. You need to replace it with your database connection string, for example: `sqlalchemy.url = pgsql://postgress:postgress@localhost/dbname`.
 
-In file `env.py` on 21 line need to replace `target_metadata = None` to:
+In the `env.py` file, on line 21, you need to replace `target_metadata = None` with:
+
 ```python
 import sys
 import os
@@ -48,12 +50,14 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'm
 from to_do import Base
 target_metadata = Base.metadata
 ```
-To automaticly collecting models from `models` folder.
-> Make sure you are created `models` folder in alembic enviroment folder.
+
+This allows Alembic to automatically collect models from the `models` folder.
+
+> Make sure you have created a `models` folder in the Alembic environment folder.
 
 > <details>
 > <summary>Reading connection from .env file</summary>
-> You may delete line with sqlalchemy.url from `alembic.ini` and define connection url direct in `env.py` by the next code snippet.
+> You may delete the line with sqlalchemy.url from `alembic.ini` and define the connection URL directly in `env.py` using the following code snippet.
 >
 > ```python
 >  def get_database_url():
@@ -73,9 +77,9 @@ To automaticly collecting models from `models` folder.
 
 ## Describing Models
 
-In created earlier folder `models` need to create all models from your orm. For model describing alembic uses **sqlalchemy**. Its automaticly installing along with alembic.
+In the previously created `models` folder, you need to create all models from your ORM. For describing models, Alembic uses **sqlalchemy**. It is installed automatically together with Alembic.
 
-For example in article will be used `to-do` model from [integrating odb orm](integrating-odb-orm.md#describing-models) article.
+For example, this article uses the `to-do` model from the [integrating odb orm](integrating-odb-orm.md#describing-models) article.
 
 ```python
 from sqlalchemy import create_engine, Column, BigInteger, Integer, String, ForeignKey, DateTime
@@ -92,12 +96,13 @@ class ToDo(Base):
     deletedAtUtc = Column(BigInteger, nullable=True)
 ```
 
-More about describing models you may read in official [documentation](https://docs.sqlalchemy.org/en/20/tutorial/metadata.html#setting-up-metadata-with-table-objects).
+You can read more about describing models in the official [documentation](https://docs.sqlalchemy.org/en/20/tutorial/metadata.html#setting-up-metadata-with-table-objects).
 
-## Creating and updating migration
+## Creating and Updating Migrations
 
-For creating or updating migrations you must have active and [coonfigured](#configuration) database.
-If connection is established u need to run command for create migration `alembic revision --autogenerate -m '<name of migration>'` and for apply new migrations run the `alembic upgrade head`.
+To create or update migrations, you must have an active and [configured](#configuration) database.
+If the connection is established, run the following command to create a migration: `alembic revision --autogenerate -m '<name of migration>'`.
+To apply new migrations, run `alembic upgrade head`.
 
 ## References
 
@@ -105,3 +110,7 @@ If connection is established u need to run command for create migration `alembic
 * [PIP Documentation](https://pip.pypa.io/en/stable/installation/)
 * [Sqlalchemy Documentation](https://docs.sqlalchemy.org/en/20/index.html)
 * [Alembic Documentation](https://alembic.sqlalchemy.org/en/latest/)
+
+***
+
+If you want, I can also make it sound more like formal documentation or more like a friendly tutorial.
