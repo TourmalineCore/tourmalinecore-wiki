@@ -2,6 +2,16 @@
 
 If your framework or stack does not support database migrations, you can use Alembic as a migration layer for your database.
 
+<!-- TOC start (generated with https://github.com/derlin/bitdowntoc) -->
+
+- [Installing](#installing)
+- [Configuration](#configuration)
+- [Describing Models](#describing-models)
+- [Creating and Updating Migrations](#creating-and-updating-migrations)
+- [References](#references)
+
+<!-- TOC end -->
+
 ## Installing
 
 A **python** environment is required for Alembic to work properly.  
