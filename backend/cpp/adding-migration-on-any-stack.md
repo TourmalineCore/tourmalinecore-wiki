@@ -110,7 +110,3 @@ To apply new migrations, run `alembic upgrade head`.
 * [PIP Documentation](https://pip.pypa.io/en/stable/installation/)
 * [Sqlalchemy Documentation](https://docs.sqlalchemy.org/en/20/index.html)
 * [Alembic Documentation](https://alembic.sqlalchemy.org/en/latest/)
-
-***
-
-If you want, I can also make it sound more like formal documentation or more like a friendly tutorial.

@@ -29,7 +29,7 @@ Downloads are available [here](https://www.codesynthesis.com/download/odb/2.5.0/
 
 Pick the base package [libodb_2.5.0-0~ubuntu22.04_amd64.deb](https://www.codesynthesis.com/download/odb/2.5.0/ubuntu/ubuntu22.04/x86_64/libodb_2.5.0-0~ubuntu22.04_amd64.deb) along with its dev version [libodb-dev_2.5.0-0~ubuntu22.04_amd64.deb](https://www.codesynthesis.com/download/odb/2.5.0/ubuntu/ubuntu22.04/x86_64/libodb-dev_2.5.0-0~ubuntu22.04_amd64.deb).
 
-Then pick the necessary database driver — for example, for PostgreSQL: [libodb-pgsql_2.5.0-0~ubuntu22.04_amd64.deb](https://www.codesynthesis.com/download/odb/2.5.0/ubuntu/ubuntu22.04/x86_64/libodb-pgsql_2.5.0-0~ubuntu22.04_amd64.deb) along with its dev version [libodb-pgsql-dev_2.5.0-0~ubuntu22.04_amd64.deb](https://www.codesynthesis.com/download/odb/2.5.0/ubuntu/ubuntu22.04/x86_64/libodb-pgsql-dev_2.5.0-0~ubuntu22.04_amd64.deb).
+Then pick the necessary database driver - for example, for PostgreSQL: [libodb-pgsql_2.5.0-0~ubuntu22.04_amd64.deb](https://www.codesynthesis.com/download/odb/2.5.0/ubuntu/ubuntu22.04/x86_64/libodb-pgsql_2.5.0-0~ubuntu22.04_amd64.deb) along with its dev version [libodb-pgsql-dev_2.5.0-0~ubuntu22.04_amd64.deb](https://www.codesynthesis.com/download/odb/2.5.0/ubuntu/ubuntu22.04/x86_64/libodb-pgsql-dev_2.5.0-0~ubuntu22.04_amd64.deb).
 
 Then install them with `dpkg`:
 
@@ -689,8 +689,6 @@ For more details on working with ODB commands and queries, refer to the official
 
 - [Making objects persistent and other write operations](https://www.codesynthesis.com/products/odb/doc/manual.xhtml#3.8)
 - [Querying the Database](https://www.codesynthesis.com/products/odb/doc/manual.xhtml#4)
-
-***
 
 ## References
 
