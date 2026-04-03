@@ -9,7 +9,7 @@
 6. [Responsive Approach](#responsive-approach)
 7. [Handling SVG/icons](#handling-svg)
 
-<h2 id="naming-conventions">Naming</h3>
+<h2 id="naming-conventions">Naming</h2>
 
 ### _CSS_
 Use [BEM](https://ru.bem.info/methodology/quick-start/) methodology if there are no CSS modules or css-in-js on the project.
@@ -324,7 +324,7 @@ Your code should not contain magic numbers, i.e. figures plucked from the air.
 
 All values that are reused in different parts of the project, especially systematically, should be stored in variables.scss.
 
-### Magical z-index
+### Magic z-index
 
 If you need to put an element on top of the entire application, create a scss variable for it and put it in the variables.scss file. No need to set extremely large values, use values no more than a thousand in increments of tens or hundreds. 
 
