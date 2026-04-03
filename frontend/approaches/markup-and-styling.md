@@ -12,7 +12,7 @@
 <h2 id="naming-conventions">Naming</h2>
 
 ### _CSS_
-Use [BEM](https://ru.bem.info/methodology/quick-start/) methodology if there are no CSS modules or css-in-js on the project.
+Use [BEM](https://ru.bem.info/methodology/quick-start/) methodology if there are no *CSS modules* or *CSS-in-JS* on the project.
 
 ```
 .block {
@@ -39,14 +39,6 @@ Use [BEM](https://ru.bem.info/methodology/quick-start/) methodology if there are
             height: 300px;
         }
     }
-    
-    &__element-border {
-      border: 2px solid $color-black;
-      
-      #{$this}--large & {
-          border-width: 6px;
-      }
-    }
 }
 ```
 
@@ -65,15 +57,7 @@ Do not forget that each block must live in its own separate file.
         ....
     }
     
-    &__link {
-        ...
-    }
-    
     &__item-list {
-        ...
-    }
-    
-    &__item-list-link {
         ...
     }
     
@@ -159,8 +143,8 @@ Don't us **!important** directive unless you absolutely need to.
 
 Make sure to add styles for the active state to interactive elements, such as buttons and links. If the designer didn't provide the necessary details, use your sense of beauty to indicate the active state by for example changing the color of a button or scaling an icon. And of course, ping the designer, let them take a look at your perspective and suggest their own.
 
-All in all, any clickable element must have an active state so that the user is aware that it can be interacted with. 
-cursor property: pointer; is also required for all clickable elements.
+All in all, any clickable element must have an active state so that the user is aware that it can be interacted with. </br>
+*cursor property: pointer* is also required for all clickable elements.
 
 ### Transitions
 Don't forget to add at least a simple transition for the active state. It will make things look much better than just an instant jerky switch.
@@ -195,7 +179,7 @@ Don't forget to add at least a simple transition for the active state. It will m
 ## Layout
 
 ### Box-sizing
-to simplify the calculation of elements dimensions 
+User *box-sizing: border-box* to simplify the calculation of elements dimensions 
 ```
 *,
 *::before,
@@ -279,7 +263,7 @@ For example, we have a list of cards in a row - it's worth wrapping each card in
 
 ### Component spacings
 
-In case you are using **components approach** on the project (and **expecially, if the components are managed in CMS**), make sure you take an effort to discuss the logic of vertical spacings between components together with the designer and come up with consistent rules that you will follow during the development. 
+In case you are using **components approach** on the project (and **especially, if the components are managed in CMS**), make sure you take an effort to discuss the logic of vertical spacings between components together with the designer and come up with consistent rules that you will follow during the development. 
 Otherwise, you are guaranteed to get bugs that the spacings do not match the design because content managers are free to come up with any combination of components order.
 
 Possible style rules may look like this:
@@ -322,11 +306,11 @@ Your code should not contain magic numbers, i.e. figures plucked from the air.
 
 ### CSS Magic
 
-All values that are reused in different parts of the project, especially systematically, should be stored in variables.scss.
+All values that are reused in different parts of the project, especially systematically, should be stored in *variables.scss*.
 
 ### Magic z-index
 
-If you need to put an element on top of the entire application, create a scss variable for it and put it in the variables.scss file. No need to set extremely large values, use values no more than a thousand in increments of tens or hundreds. 
+If you need to put an element on top of the entire application, create a scss variable for it and put it in the *variables.scss* file. No need to set extremely large values, use values no more than a thousand in increments of tens or hundreds. 
 
 ```
 $layer-alert-bar-container: 80;
@@ -378,7 +362,7 @@ However, don't lazy load the following:
 4. Images likely to be printed
 
 ### Image alt text 
-Alt text for informative images should be convey meaning and give the context, it shouldn't be too generic or redundant. 
+Alt text for informative images should convey meaning and give the context, it shouldn't be too generic or redundant. 
 
 ❌ BAD (generic):
 ```
@@ -462,7 +446,7 @@ CSS to prevent layout shift:
 }
 ```
 
-2. Modern *aspect-ratio* property
+2. Use modern *aspect-ratio* property
 ```
 .image-wrapper {
   aspect-ratio: 16 / 9; // width / height
@@ -474,15 +458,14 @@ CSS to prevent layout shift:
   }
 }
 ```
-You can test CLS occurs in DevTools with network throttling and monitor Core Web Vitals in Lighthouse.
+You can test CLS in DevTools with network throttling and monitor Core Web Vitals in Lighthouse.
 
-## Responsive 
 <h2 id="responsive-approach">Responsive Approach</h2>
 
 ### Viewports
 
 We support all viewports from 375 to 4k screens.
-But since there is rarely designs for 4k, you need to make sure that everything looks ok on them yourself. 
+But since there is rarely designs for 4k, you need to make sure that everything looks good on them yourself. 
 
 ### Mobile-first approach
 Create a mobile version first, then go on to the desktop.
@@ -516,7 +499,7 @@ If there is no separate designs for tablets, use your sense of beauty to get a d
 We have a list of all possible breakpoints used on the project:
 
 ```
-$mobile-width: 320px;
+$mobile-width: 375px;
 $tablet-width: 768px;
 $tablet-xl-width: 1024px;
 $desktop-width: 1200px;
