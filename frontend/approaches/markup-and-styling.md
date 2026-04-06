@@ -1,13 +1,29 @@
 # Frontend CSS/Styling Guidelines
 
 ## Table of Contents
-1. [Naming Conventions](#naming-conventions)
-2. [Hover and Transitions](#hover-and-transitions)
-3. [Layout](#layout)
-4. [Magic Numbers](#magic-numbers)
-5. [Media](#media)
-6. [Responsive Approach](#responsive-approach)
-7. [Handling SVG/icons](#handling-svg)
+1. [Semantic Markup and Page Structure](#semantics-and-page-structure)
+2. [Naming Conventions](#naming-conventions)
+3. [Hover and Transitions](#hover-and-transitions)
+4. [Layout](#layout)
+5. [Magic Numbers](#magic-numbers)
+6. [Media](#media)
+7. [Responsive Approach](#responsive-approach)
+8. [Handling SVG/icons](#handling-svg)
+
+
+<h2 id="#semantics-and-page-structure">Semantic Markup and Page Structure</h2>
+
+Proper semantic markup is the foundation of accessible and maintainable pages. Follow these rules when you work on the HTML markup of the page:
+
+- Use appropriate semantic tags (e.g., *ul*, *ol*, *li*, *button*, etc. ).
+- Divide the page into regions (W3C landmarks: *main*, *header*, *footer*, *nav*, *section*).
+- Markup must be valid. Run your HTML through the official [W3C validator](validator.w3.org).
+- Make sure that the page has a **title**.
+- Make sure that the page has only one **h1** heading (mandatory).
+- Make sure that the page has a logical heading structure (*h1* -> *h2* -> *h3*, etc.).
+- Explicitly connect labels to inputs using **for** and **id**, group related form elements with **fieldset** and **legend**.
+- Make sure *html* element has a **lang** attribute (e.g., *lang="en"*).
+- Make sure that interactive elements (buttons, links, inputs) are not nested inside other interactive elements. 
 
 <h2 id="naming-conventions">Naming</h2>
 
