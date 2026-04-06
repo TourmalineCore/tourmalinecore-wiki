@@ -9,6 +9,7 @@
 6. [Media](#media)
 7. [Responsive Approach](#responsive-approach)
 8. [Handling SVG/icons](#handling-svg)
+9. [CSS Appoaches](#css-approaches)
 
 
 <h2 id="#semantics-and-page-structure">Semantic Markup and Page Structure</h2>
@@ -151,7 +152,7 @@ If you need to use a heavy selector to solve a problem, you might need to simpli
 }
 ```
 
-Don't us **!important** directive unless you absolutely need to.
+Don't use **!important** directive unless you absolutely need to.
 
 <h2 id="hover-and-transitions">Hover and Transitions</h2>
 
@@ -638,3 +639,68 @@ Single path = single CSS property:</br>
 ```
 
 However, multiple paths are necessary for multi-color icons, and for icons with animated parts with different animation timing or different hover states. This will affect performance, because the browser will have to parse multiple DOM nodes and execute multiple paint operations, so use it when you have a clear reason.
+
+
+<h2 id="#css-approaches">CSS Appoaches</h2>
+
+### Variables
+
+Define global design tokens (e.g., colors, z-index) as CSS variables in the *_variables.scss* to avoid duplication and make their use consistent across the project.
+
+```
+css
+// text
+$color-text-primary: rgb(32 31 31 / 100%);
+$color-text-secondary: rgb(113 113 113 / 100%);
+
+// z-index
+$overlay: 90;
+$mobile-nav: 100;
+$cookie-banner: 200;
+```
+
+### Mixins 
+Mixins help you reuse common style patterns across your project without duplicating code. 
+Define mixins for frequently used patterns like breakpoints, typography styles, and visual effects.
+
+```
+@mixin text-primary {
+  font-family: Inter, sans-serif;
+  font-size: 16px;
+  ...
+}
+
+@mixin underline {
+  position: relative;
+  text-decoration: none;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 1px;
+    background-color: $color-black;
+    transform-origin: bottom left;
+    transition: transform 0.25s ease-out;
+  }
+}
+```
+
+Use `@content` for flexible responsive mixins
+
+```
+@mixin hover-focus {
+  &:hover,
+  &:focus {
+      @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: #{$desktop-width}) {
+    @content;
+  }
+}
+```
