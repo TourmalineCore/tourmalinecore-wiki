@@ -368,6 +368,9 @@ If you cannot do without magic numbers, add a comment describing why you did it 
 
 <h2 id="media">Media</h2>
 
+### Image Compression
+Before you add an image to the project's assets or directly to the page through CMS, make sure to compress it without quality losses using any online tool, e.g.[tinypng](https://tinypng.com/), [tinyjpg](https://tinyjpg.com/). Proper image compression reduces page load time and improves Core Web Vitals scores.
+
 ### Lazy Loading 
 Loading all images upfront is a bad practice, because it wastes bandwidth and slows down initial page load.
 ```
