@@ -1,6 +1,6 @@
 # Layering
 
-In our projects we follow the pattern of **Container/Content** controlled by MobX state.
+In our projects we follow the pattern of **Container/Content** controlled by MobX state to achieve clear separation of concerns, better testability, and scalable architecture.
 To follow this approach we single out independent sections on the page which have their own state and network calls.
 
 Below is a typical folder structure for this approach. In this case _auth_ is the only section on the page, so we don't need to create a _sections_ folder:
@@ -36,6 +36,29 @@ export function AuthPage() {
   )
 }
 ```
+
+In case the content gets too large, we add a components directory and extract separate sections there:
+
+```bash
+├── pages
+│   ├── add-book
+│   │   └── components
+│   │       └── radio-group
+│   │           └── RadioGroup.tsx
+│   │           └── RadioGroup.scss
+│   │       └── counter-input
+│   │           └── CounterInput.tsx
+│   │           └── CounterInput.scss
+│   │   └── state
+│   │       └── AddBookState.cy.ts
+│   │       └── AddBookState.ts
+│   │       └── AddBookStateContext.ts
+│   │   └── AddBookContainer.tsx
+│   │   └── AddBookContent.tsx
+│   │   └── AddBookPage.scss
+│   │   └── AddBookPage.tsx
+```
+
 
 ## Pros of Container/Content Pattern with MobX
 
