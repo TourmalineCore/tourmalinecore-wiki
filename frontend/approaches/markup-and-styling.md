@@ -688,7 +688,7 @@ Define mixins for frequently used patterns like breakpoints, typography styles, 
 }
 ```
 
-Use `@content` for flexible responsive mixins
+Use `@content` for flexible responsive mixins and interactive state mixins (like hover-focus):
 
 ```
 @mixin hover-focus {
