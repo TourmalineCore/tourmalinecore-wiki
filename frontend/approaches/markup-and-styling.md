@@ -195,7 +195,7 @@ Don't forget to add at least a simple transition for the active state. It will m
 ## Layout
 
 ### Box-sizing
-User *box-sizing: border-box* to simplify the calculation of elements dimensions 
+Use *box-sizing: border-box* to simplify the calculation of elements dimensions 
 ```
 *,
 *::before,
@@ -205,6 +205,12 @@ User *box-sizing: border-box* to simplify the calculation of elements dimensions
 ```
 
 ### Modal and PageScroll
+To manage page scroll behavior when modals or overlays are active, here's the following blocking strategy:
+
+- **is-blocked** is used to prevent scrolling on desktop by hiding overflow and compensate for scrollbar width to prevent layout shift.
+
+- **is-blocked-touch**: is used for fixed positioning for touch devices to maintain scroll position and prevent page movement behind modals.
+
 ```
 .html {
     position: relative;
