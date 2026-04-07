@@ -9,4 +9,4 @@ Figma File Structure
 The Figma file should be clear to any developer or designer opening it for the first time. 
 The recommended page structure is: 
 
-![]("images/structure.png")
+![](images/structure.png)
