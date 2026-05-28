@@ -1,30 +1,19 @@
 # Accessibility Testing
-Тестирование доступности (E2E). Проверяют, что наши страницы сайта соответствуют критериям доступности. Имеются вручную написанные тесты с помощью Playwright, которые проверяют:
 
-Правильный путь навигации с помощью Tab'ов
-Наличие фокуса на элементе
-Наличие aria-label в элементах без текста (например крестик закрытия попапа)
-Что проверяют?
-Проверяют сайт по критериям доступности.
+## Context
 
-Когда пишутся Playwright тесты на доступность?
-Пишутся после того как сверстан блок и в блоке присутствуют интерактивные элементы (кнопки, ссылки). Примеры тут
+Accessibility testing ensures our web pages meet established accessibility criteria (WCAG). We use a combination of automated tools and manually written E2E tests to verify that all users, including those using assistive technologies, can effectively interact with our products.
 
-Также имеются тесты, внутри которых используется инструмент axe-core, который анализирует страницы сайта на соответствие критериям доступности.
+## What to Test
+Test all aspects of user interaction, including:
+1. Attributes: role, tabindex, aria-attributes.
+2. Interaction: click events, keyboard navigation (Tab, Enter, Space).
+3. Visual Presentation: readability, color contrast, element positioning, and zoom behavior.
 
-Когда пишутся тесты c axe-core?
-Пишутся после того как сверстана страница. Примеры тут
+## E2E Accessibility Testing Strategy
 
+Types of tests
 
-# Тестирование доступности
-
-Тестировать нужно все, что касается взаимодействия пользователя с системой.
-
-## Что именно тестировать?
-
-- Атрибуты (role, tabindex, aria-атрибуты)
-- Взаимодействие (клики, навигация с клавиатуры)
-- Визуальная составляющая (тексты, контраст, расположение элементов и т.д.)
 
 ## Анализаторы доступности:
 
@@ -120,25 +109,51 @@ Playwright позволяет тестировать браузерные соб
 ![image info](./images/contrast-ratio-check-playwright.png)<br/> 
 *Пример проверки контрастности на Playwright с использованием пакета axe-core*<br/> 
 
-## Что нельзя протестировать автоматически?
-- Цветовое восприятие<br/>
+
+## When to Write What Test
+
+| Development Stage | Test Type |
+| :--- | :--- |
+| Component is styled, has interactive elements | Manual Playwright tests (tab, focus, aria-label) |
+| Page is fully styled and integrated | `axe-core` automated scan via Playwright |
+| During code review | a11y plugins |
+| Post-deploy | Manual review (screen reader, zoom, tab order) |
+
+
+##  What Cannot Be Fully Automated
+Automated tools don't catch 100% accessibility issues. The following must be tested manually:
+| Category | Examples |
+| :--- | :--- |
+| **Color Perception** | Is color the only differentiator for status? |
+| **Label Redundancy** | Repetitive or uninformative link text (e.g., multiple "Click Here" links). |
+| **Visual Order (Tab order)** | Does the keyboard focus order match the visual layout? |
+| **UI Overlay / Zoom** | Does the interface break or overlap at 200% zoom? |
+| **Semantic Correctness** | Using `<table>` for layout instead of data, or `<div>` for a button. |
+| **Focus Traps** | Can the user Tab out of a modal or date picker? |
+| **Content Quality** | Form validation messages, translation accuracy, meaningful alt text for images. |
+| **Usability** | Overall ease of use with screen readers. |
+
+### Examples
+#### Color Perception
 ![image info](./images/color-perception.png)
-- Избыточность лейблов<br/>
+#### Label Redundancy
 ![image info](./images/redundant-labels.png)
-- Визуальный порядок контента (tab order должен соответствовать реальному)
-- Наложение интерфейса (например при зуме)<br/>
+#### Visual Order
+#### UI Overlay 
 ![image info](./images/ui-overlay.png) 
-- Неправильная семантика (например email на таблицах)<br/>
+#### Wrong Semantics
 ![image info](./images/wrong-sematics.png)<br/> 
 *Убираем семантику*
 
-- Удобство использования
-- Ловушки для фокуса (датапикеры, модалки)<br/>
+#### Focus Traps
 ![image info](./images/focus-traps.png)
-- Контент: тексты, валидация форм, переводы<br/>
+#### Content Quality
+#### Form Validation
 ![image info](./images/form-validation.png)
+#### Wrong Translation
 ![image info](./images/wrong-translation.png)
-- Адекватность альтов<br/>
+
+#### Inadequate alt
 ![image info](./images/wrong-alt.png)
 
 
