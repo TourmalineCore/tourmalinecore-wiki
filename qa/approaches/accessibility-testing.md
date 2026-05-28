@@ -12,7 +12,29 @@ Test all aspects of user interaction, including:
 
 ## E2E Accessibility Testing Strategy
 
-Types of tests
+### Types of tests
+
+1. **ariaAttrsTest.spec.tsx**
+
+This test automates a person pressing Tab through the entire page and verifies that focus is placed on the right elements in the right order. It ensures keyboard-only users (e.g., those with motor disabilities or using screen readers) can navigate the site predictably, without getting stuck or encountering illogical focus jumps.
+
+2. **axeCheckUpPage.spec.tsx**
+
+This test runs an automated axe-core scan on a page across all device sizes and reports any WCAG violations found, including but not limited to:
+- color contrast ratios
+- missing or invalid ARIA attributes
+- missing alt text on images
+- proper heading hierarchy
+- form label associations
+- landmark roles
+
+3. **focusIndicatorTest.spec.tsx**
+
+This test ensures every link and button on the page shows a visible "I am focused" style when tabbed to. It matters because users navigating with a keyboard must be able to see which element currently has focus. Without a visible indicator (e.g., a blue outline), they cannot navigate effectively. This is a core WCAG 2.1 success criterion.
+
+4. **focusOrderTest.spec.tsx**
+
+This test verifies that when a user navigates using only the Tab key, interactive elements receive focus in a logical, predictable order that matches the visual layout of the page. It matters because if focus jumps randomly or skips critical elements, the site becomes hard to use for keyboard-only users.
 
 
 ## Анализаторы доступности:
