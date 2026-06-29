@@ -103,12 +103,12 @@ A **recipe** is a set of actions performed by `make`. A single recipe can contai
 
 Sometimes, before a set of actions can be executed, other actions must be performed first; in other words, a recipe may have **prerequisites** on other rules. Such prerequisites are specified after the target of the current rule and the `:` character, taking the form of a list of targets (separated by ` `) on which the current rule depends.
 
-Here is an example of a rule that, when invoked, will print `“Hello, world!”` to the terminal:
+Here is an example of a rule that, when invoked, will print `"Hello, world!"` to the terminal:
 ```makefile
 # Makefile
 
 hello:
-    echo “Hello, world!”
+    echo "Hello, world!"
 ```
 
 To run the rule, you must call `make` in the terminal, specifying the target of the desired rule:
@@ -116,7 +116,7 @@ To run the rule, you must call `make` in the terminal, specifying the target of 
 make hello
 
 # Terminal:
-# echo “Hello, world!”
+# echo "Hello, world!"
 # Hello, world!
 ```
 
@@ -125,7 +125,7 @@ By default, `make` prints the command before executing it. To disable this, add 
 # Makefile
 
 hello:
-    @echo “Hello, world!”
+    @echo "Hello, world!"
 ```
 
 Then, when executed, the following will be printed:
@@ -146,10 +146,10 @@ Sometimes it may be necessary to run one target before executing another; in oth
 # Makefile
 
 build:
-    @echo “Building the project...”
+    @echo "Building the project..."
 
 test: build
-    @echo “Running tests...”
+    @echo "Running tests..."
 ```
 
 `make` will resolve dependencies automatically:
@@ -179,10 +179,10 @@ You can declare phony targets using the `.PHONY` helper target:
 .PHONY: build test
 
 build:
-    @echo “Building the project...”
+    @echo "Building the project..."
 
 test: build
-    @echo “Running tests...”
+    @echo "Running tests..."
 ```
 
 > A single `Makefile` can contain multiple `.PHONY` targets, but it is recommended to specify only one that contains all phony targets, as this makes them easier to track.
@@ -233,7 +233,7 @@ show-environment-wizard:
 make show-environment-wizard
 
 # Terminal:
-# “Current environment: production”
+# "Current environment: production"
 ```
 
 **Infinite loops** are possible:
@@ -264,7 +264,7 @@ show-environment-wizard:
 ```
 
 ```bash
-make show-environment-wizard # “Current environment: ”
+make show-environment-wizard # "Current environment: "
 ```
 
 You can **safely** expand a variable using itself, as shown in the example with `pytest` (a Python testing library) below:
@@ -321,30 +321,30 @@ LOG_LEVEL := DEBUG
 endif
 
 run:
-    @echo “Current environment: $(ENV_TYPE)”
+    @echo "Current environment: $(ENV_TYPE)"
     @python main.py --log-level $(LOG_LEVEL)
 ```
 
 ```bash
-make run # “Current environment: development”
-make run ENV_TYPE=production # “Current environment: production”
+make run # "Current environment: development"
+make run ENV_TYPE=production # "Current environment: production"
 ```
 
 #### Service Variables
 
 ##### .DEFAULT_GOAL
 
-The `.DEFAULT_GOAL` variable defines the default goal that will be executed when `make` is called without arguments:
+By default, when you run `make`, the first tagret in `Makefile` will be executed, with the exception of utility target. To override the default target, use the `.DEFAULT_GOAL` variable:
 ```makefile
 # Makefile
 
 .DEFAULT_GOAL := help
 
 help:
-    @echo “List of available goals:”
-    @echo “help - Displays a list of available goals”
-    @echo “run - Runs the project”
-    @echo “run-tests - Runs the tests”
+    @echo "List of available goals:"
+    @echo "help - Displays a list of available goals"
+    @echo "run - Runs the project"
+    @echo "run-tests - Runs the tests"
 
 run:
     @python main.py
@@ -377,7 +377,7 @@ In the previous example, if the `.env` file is missing, `make` will throw an exc
 ```makefile
 # Makefile
 
-ifneq ($(wildcard .env), “”)
+ifneq ($(wildcard .env),)
 include .env
 export
 endif
@@ -393,7 +393,7 @@ LOG_LEVEL := DEBUG
 endif
 
 run:
-    @echo “Current environment: $(ENV_TYPE)”
+    @echo "Current environment: $(ENV_TYPE)"
     @python main.py --log-level $(LOG_LEVEL)
 ```
 
@@ -428,7 +428,7 @@ An argument is used in the same way as a variable:
 
 run:
     @python main.py --port $(port)
-    @echo “The application is running on port $(port)”
+    @echo "The application is running on port $(port)"
 ```
 
 ```bash
@@ -443,16 +443,16 @@ If a target has dependencies, the argument’s value will also be available when
 # Makefile
 
 build:
-    @echo “Building for the $(env-type) environment”
-    if [ “$(env-type)” = “production” ]; then \
-        @conan build . --settings:host=“build_type=Release” \
+    @echo "Building for the $(env-type) environment"
+    if [ "$(env-type)" = "production" ]; then \
+        @conan build . --settings:host="build_type=Release" \
     else \
-        @conan build . --settings:host=“build_type=Debug” \
+        @conan build . --settings:host="build_type=Debug" \
     fi
 
 run: build
-    @echo “Running the application in the $(env-type) environment”
-    if [ “$(env-type)” = “production” ]; then \
+    @echo "Running the application in the $(env-type) environment"
+    if [ "$(env-type)" = "production" ]; then \
         ./build/Release/my-api \
     else \
         ./build/Debug/my-api \
