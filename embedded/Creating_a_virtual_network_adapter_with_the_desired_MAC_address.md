@@ -27,10 +27,9 @@ Directly modifying the settings of your actual network card.
 ### Method 2: Virtual Adapter (Hyper-V)
 Creating a software-defined adapter that doesn't exist physically.
 
-1. **Hyper-V:** `Win+R` -> `optionalfeatures` -> Enable Hyper-V. Create a virtual switch.
-2. **Set Custom MAC:**
-   * Device Manager (`Win+X`) -> Find Adapter -> Properties -> Advanced.
-   * Look for **Network Address** -> Set the MAC (e.g., `102ABB3C4D5F`).
+1. **Enable Hyper-V:** `Win+R` -> `optionalfeatures` -> Enable "Hyper-V" -> Restart PC.
+2. **Create virtual switcher:** Find on your PC "Hyper-V manager" -> Press "Virtual Switch Manager" -> Create new Virtual Switch with "Internal" type.
+3. **Set Custom MAC:** Device Manager (`Win+X`) -> Find Adapter -> Properties -> Advanced -> Look for Network Address -> Set the MAC (e.g., `102ABB3C4D5F`).
 
 ## 4. Linux Instructions 
 
