@@ -75,7 +75,7 @@ Demonstrate the elements’ states directly in the layout or next to the main sc
 
 ## 9. Images in Design ##
 
-Try to use standard image aspect ratios (e.g., 4:3) and maintain proportions across all screen sizes. Place the images from the layouts next to the layout or in a folder on Google Drive. Keep the effects applied to images in the design, but don’t round the corners if it's part of the design. Images with a transparent background should be PNGs and should be compressed [here](https://tinypng.com/), all others should be JPEGs and should be compressed [here](https://www.iloveimg.com/ru/compress-image/compress-jpg).
+Try to use standard image aspect ratios (e.g., 4:3) and maintain proportions across all screen sizes. Place the images from the layouts next to the layout or in a folder on Google Drive. Keep the effects applied to images in the design, but don’t round the corners if it's part of the design. Images with a transparent background should be PNGs and should be compressed [here](https://tinypng.com/), all others should be JPEGs and should be compressed [here](https://www.iloveimg.com/compress-image/compress-jpg).
 
 ## 10. Graphic Elements and Illustrations ##
 
@@ -102,7 +102,7 @@ Basic Rules:
 The project must use a unified color system.
 Define and store all interface colors in the color’s styles in Figma. The same color must be used via the same style. If a new color appears, add it to the system. Group colors by their purpose. Avoid using transparency for block backgrounds when possible, as the final rendered image might differ from the layout due to layer blending in the code.
 
-![](images/color styles.png)
+![](images/color-styles.png)
 
 ## 13. Animations and Effects ##
 
