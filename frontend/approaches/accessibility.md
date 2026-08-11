@@ -1,16 +1,14 @@
 # Accessibility
-Accessibility is not just about visually impaired people. It is about keyboard navigation as much as disability. Everyone, including people with temporary limitations like a broken mouse, needs to operate a site via keyboard. 
+Accessibility is not just about people who are blind or have low vision. It embraces a wide range of disabilities, including motor, cognitive, and auditory impairments, as well as situational limitations (e.g., using a device in bright sunlight). Everyone, including users with temporary disabilities (such as a broken arm) or permanent conditions, benefits from a site that functions without a mouse.
 
-Developing an accessible website involves proper semantic HTML structure, correct tagging, and logical nesting — technical details that are often overlooked during standard development.
+Developing an accessible website involves proper semantic HTML structure, correct tagging, and logical nesting — technical details that are often overlooked during standard development but are essential for assistive technology users.
 
-## Accessible Website vs Version for Visually Impaired
+## Accessible Website vs Version for People with Visual Impairments
 Creating a single, accessible main website based on modern WCAG princples is of high importaince and we are expected to consider accessibility requirements on all our projects wherever possible.
 
-We discarded the idea of creating separate versions for the visually impaired (VVI). VVI provides adjustable fonts and colors but excludes users with motor or other disabilities and is often unused because many such users rely on screen readers.
+We discarded the idea of creating separate versions for people with visual impairments (VVI). VVI provides adjustable fonts and colors but excludes users with motor or other disabilities and is often unused because many such users rely on screen readers.
 
-Modern Russian law, via GOST 2020 (based on WCAG), now prioritizes making the main site accessible for all. A well-designed site with responsive layouts, high contrast, and clear text meets these requirements inherently.
-
-Thus, a single inclusive site is the best practice and legally sufficient. A separate VVI is outdated, potentially discriminatory, and provides an incomplete experience. Following WCAG ensures access for everyone, including those with temporary limitations.
+We prioritize making the main site accessible for all, providing responsive layouts, high contrast, and clear texts. It is the best practice, being inclusive and legally sufficient. A separate VVI is outdated, potentially discriminatory, and provides an incomplete experience. Following WCAG ensures access for everyone, including those with temporary limitations.
 
 ## WCAG-based Guidelines for Developers
 
@@ -37,6 +35,8 @@ When content updates dynamically (e.g., form submission message, loaded componen
 ### Color
 - Avoid using color as the only visual means of conveying information or indicating an action; color should be combined with other identifiers (icons, explanatory text).
 ![alt text](/frontend/images/no-using-color-only-for-info.png)
+![alt text](/frontend/images/use-text-for-info.png)
+
 - Sufficient color contrast.
 
 ### Text
