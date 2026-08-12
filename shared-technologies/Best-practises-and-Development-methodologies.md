@@ -28,7 +28,7 @@ Another topic for thread is TODO list. It is really helpful to mark all things t
 
 It is necessary to be consistent in this question, so don't forget to update these threads every day or after every step of development. 
 
-When the task is ready we prefer to send MR to our teammates for check in threads as well. When someone reviews your code he can notice some mistakes that you've missed. Only after that we send our MR to the customer and mark in Discord thread that this task is done ✅.
+When the task is ready we prefer to send MR to our teammates for check in threads as well. When someone reviews your code he can notice some mistakes that you've missed. Only after that we send our MR to the customer and mark in thread that this task is done ✅.
 
 ### MR Check list
 
