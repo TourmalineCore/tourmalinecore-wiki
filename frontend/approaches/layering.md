@@ -18,7 +18,7 @@ Below is a typical folder structure for this approach. In this case _auth_ is th
 │   │   └── AuthPage.tsx
 ```
 
-*Page.tsx file only wraps the Container in context provider, e.g.:
+> Page.tsx file only wraps the Container in context provider, e.g.:
 
 ```javascript
 AuthPage.tsx
@@ -37,22 +37,46 @@ export function AuthPage() {
 }
 ```
 
+In case there are several sections on the page, create a _sections_ folder:
+```bash
+├── pages
+│   ├── todos
+│   │   ├── sections
+│   │   │   ├── list
+│   │   │   │   └── state
+│   │   │   │   │   └── ToDosState.cy.ts
+│   │   │   │   │   └── ToDosState.ts
+│   │   │   │   │   └── ToDosStateContext.ts
+│   │   │   │   └── ToDosContainer.tsx
+│   │   │   │   └── ToDosContent.tsx
+│   │   │   │   └── ToDosContents.scss
+│   │   │   └── new-to-do
+│   │   │       └── state
+│   │   │       │   └── NewToDoState.cy.ts
+│   │   │       │   └── NewToDoState.ts
+│   │   │       │   └── NewToDoStateContext.ts
+│   │   │       └── NewToDoContainer.tsx
+│   │   │       └── NewToDoContent.tsx
+│   │   │       └── NewToDoContents.scss
+│   │   └── ToDosPage.tsx
+```
+
 In case the content gets too large, we add a components directory and extract separate sections there:
 
 ```bash
 ├── pages
 │   ├── add-book
 │   │   └── components
-│   │       └── radio-group
-│   │           └── RadioGroup.tsx
-│   │           └── RadioGroup.scss
-│   │       └── counter-input
-│   │           └── CounterInput.tsx
-│   │           └── CounterInput.scss
+│   │   │   └── radio-group
+│   │   │   │   └── RadioGroup.tsx
+│   │   │   │   └── RadioGroup.scss
+│   │   │   └── counter-input
+│   │   │       └── CounterInput.tsx
+│   │   │       └── CounterInput.scss
 │   │   └── state
-│   │       └── AddBookState.cy.ts
-│   │       └── AddBookState.ts
-│   │       └── AddBookStateContext.ts
+│   │   │   └── AddBookState.cy.ts
+│   │   │   └── AddBookState.ts
+│   │   │   └── AddBookStateContext.ts
 │   │   └── AddBookContainer.tsx
 │   │   └── AddBookContent.tsx
 │   │   └── AddBookPage.scss
