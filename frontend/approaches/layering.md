@@ -61,7 +61,7 @@ In case there are several sections on the page, create a _sections_ folder:
 │   │   └── ToDosPage.tsx
 ```
 
-In case the content gets too large, we add a components directory and extract separate sections there:
+In case the content gets too large, we add a _components_ directory and extract separate sections there:
 
 ```bash
 ├── pages
@@ -83,6 +83,15 @@ In case the content gets too large, we add a components directory and extract se
 │   │   └── AddBookPage.tsx
 ```
 
+However, if the component is shared across different pages, we place it into the shared components folder:
+
+```bash
+├── src
+│   ├── components
+│   │   └── button
+│   │       └── Button.tsx
+│   │       └── Button.scss
+```
 
 ## Pros of Container/Content Pattern with MobX
 
@@ -113,6 +122,7 @@ In case of simple static components this approach might be an overkill.
 [Feature-Sliced Design](https://fsd.how/docs/get-started/overview/) is an architectural methodology for scaffolding front-end applications, based on layers, slices, and segments:
 
 ![Layers, slices, and segments in FSD](/frontend/images/fsd.webp)
+*Processes layer is deprecated
 
 **Problems of FSD:**
 1. Cross-imports of slices are prohibited
