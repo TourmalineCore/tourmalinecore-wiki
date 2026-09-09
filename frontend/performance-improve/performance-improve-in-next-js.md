@@ -1,5 +1,15 @@
 # Performance improve in Next.js
 
+## Navigation
+- [Diagnostic Tools](#diagnostic-tools)
+- [Images](#images)
+- [Fonts](#fonts)
+- [Scripts](#scripts)
+- [Dynamic imports](#dynamic-imports)
+- [Installing Dependencies](#installing-dependencies)
+
+---
+
 ## Diagnostic Tools
 - Lighthouse.
 - The Performance tab in developer tools. You can find detailed instructions on how to use it [here](https://www.debugbear.com/blog/lcp-request-discovery).
@@ -33,6 +43,11 @@ This code tells the browser the following:
 - If the viewport width is between 768px and 1365px, the image should take up 50% of the viewport width.
 - Otherwise (for viewports 1366px and larger), the image should take up 33% of the viewport width.
 
+## Fonts
+To add fonts to your project, use the [next/font](https://nextjs.org/docs/app/api-reference/components/font) component. It helps make your fonts load faster and more efficiently.
+
+Use the `display: swap` option. This tells the browser to show the text right away using a backup font. Then, when your main font is ready, the browser will switch to it automatically. This way, users can read the text without waiting.
+
 ## Scripts
 To add third-party scripts, use the Next.js [`Script`](https://nextjs.org/docs/pages/api-reference/components/script) tag.
 
@@ -64,3 +79,31 @@ const Modal = dynamic(
 ```
 
 If you use a dynamic import for a component that contains important information for SEO, make sure to set `ssr: true`.
+
+## Installing Dependencies
+Install packages in the right environment. This helps make the final bundle smaller, speeds up the build process, and reduces server load.
+
+### What should go in dependencies
+Only put packages in dependencies if they are actually used when your app is running in production:
+- Frameworks and UI libraries (react, next, react-dom)
+- HTTP API Client (axios)
+- Date handling packages (dayjs, moment)
+
+To install a package in dependencies, use this command:
+
+```bash
+npm install <packageName>
+```
+
+### What should go in devDependencies
+Put everything in devDependencies that is only needed during development or building:
+- Type definitions (@types/*, typescript)
+- Linters and formatters (eslint, stylelint)
+- Build and post-processing tools (postcss, autoprefixer)
+- Testing frameworks (jest, playwright, cypress)
+
+To install a package in devDependencies, use this command:
+
+```bash
+npm install -D <packageName>
+```
