@@ -18,7 +18,7 @@ Below is a typical folder structure for this approach. In this case _auth_ is th
 │   │   └── AuthPage.tsx
 ```
 
-*Page.tsx file only wraps the Container in context provider, e.g.:
+> Page.tsx file only wraps the Container in context provider, e.g.:
 
 ```javascript
 AuthPage.tsx
@@ -37,28 +37,61 @@ export function AuthPage() {
 }
 ```
 
-In case the content gets too large, we add a components directory and extract separate sections there:
+In case there are several sections on the page, create a _sections_ folder:
+```bash
+├── pages
+│   ├── todos
+│   │   ├── sections
+│   │   │   ├── list
+│   │   │   │   └── state
+│   │   │   │   │   └── ToDosState.cy.ts
+│   │   │   │   │   └── ToDosState.ts
+│   │   │   │   │   └── ToDosStateContext.ts
+│   │   │   │   └── ToDosContainer.tsx
+│   │   │   │   └── ToDosContent.tsx
+│   │   │   │   └── ToDosContents.scss
+│   │   │   └── new-to-do
+│   │   │       └── state
+│   │   │       │   └── NewToDoState.cy.ts
+│   │   │       │   └── NewToDoState.ts
+│   │   │       │   └── NewToDoStateContext.ts
+│   │   │       └── NewToDoContainer.tsx
+│   │   │       └── NewToDoContent.tsx
+│   │   │       └── NewToDoContents.scss
+│   │   └── ToDosPage.tsx
+```
+
+In case the content gets too large, we add a _components_ directory and extract separate sections there:
 
 ```bash
 ├── pages
 │   ├── add-book
 │   │   └── components
-│   │       └── radio-group
-│   │           └── RadioGroup.tsx
-│   │           └── RadioGroup.scss
-│   │       └── counter-input
-│   │           └── CounterInput.tsx
-│   │           └── CounterInput.scss
+│   │   │   └── radio-group
+│   │   │   │   └── RadioGroup.tsx
+│   │   │   │   └── RadioGroup.scss
+│   │   │   └── counter-input
+│   │   │       └── CounterInput.tsx
+│   │   │       └── CounterInput.scss
 │   │   └── state
-│   │       └── AddBookState.cy.ts
-│   │       └── AddBookState.ts
-│   │       └── AddBookStateContext.ts
+│   │   │   └── AddBookState.cy.ts
+│   │   │   └── AddBookState.ts
+│   │   │   └── AddBookStateContext.ts
 │   │   └── AddBookContainer.tsx
 │   │   └── AddBookContent.tsx
 │   │   └── AddBookPage.scss
 │   │   └── AddBookPage.tsx
 ```
 
+However, if the component is shared across different pages, we place it into the shared components folder:
+
+```bash
+├── src
+│   ├── components
+│   │   └── button
+│   │       └── Button.tsx
+│   │       └── Button.scss
+```
 
 ## Pros of Container/Content Pattern with MobX
 
@@ -78,11 +111,30 @@ In case the content gets too large, we add a components directory and extract se
 ## Cons of Container/Content Pattern with MobX
 
 1. Boilerplate code
-2. Complexity
-- More files to navigate
-- Higher learning curve, because you need more time for onboarding
-- Simple components become over-engineered
+2. More files to navigate
+3. Simple components may become over-engineered
 
 ## When to Use
 This approach is worth following for complex components with state and API calls. Also if testing is of a high priority on the project, the layering approach is quite useful to separate different testing types. 
 In case of simple static components this approach might be an overkill. 
+
+## Alternatives
+[Feature-Sliced Design](https://fsd.how/docs/get-started/overview/) is an architectural methodology for scaffolding front-end applications, based on layers, slices, and segments:
+
+![Layers, slices, and segments in FSD](/frontend/images/fsd.webp)
+*Processes layer is deprecated
+
+**Problems of FSD:**
+1. Cross-imports of slices are prohibited
+2. Related functionality is spread across different layers leadgin to high coupling
+3. Difficult to understand where the data comes from
+4. Lack of a clear understanding of what goes on which layer
+5. Problems with documentation
+
+Comprared to our approach, FSD seems excessively complex due to the following:
+1. As a project grows, the relationships between entities become significantly more complex, making the code harder to maintain. 
+2. FSD's mental model can be interpreted differently by teams and team members.
+3. A strict layer hierarchy forces the logic of a single business entity to be spread across entities, features, and widgets, thereby losing transparency. 
+4. Cross-imports between slices are inevitable, and traversing them through @x files only adds cognitive noise without solving the coupling problem.
+
+Our Container/Content + MobX approach, however, offers a simple and transparent model: all page logic is collected in one place, state is separated from presentation, and business logic is concentrated in the state. This gives us structure and predictability in the code without the need to spend time creating excessive abstractions.
