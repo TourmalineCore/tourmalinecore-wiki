@@ -1,5 +1,7 @@
 # Performance improve in Next.js
 
+***This document is focused on `Pages router`, and some sections will not be relevant for the `App router`.***
+
 ## Navigation
 - [Diagnostic Tools](#diagnostic-tools)
 - [GetStaticProps vs GetServerSideProps](#getstaticprops-vs-getserversideprops)
@@ -46,7 +48,7 @@ For most images on the website, it is recommended to use the Next.js [`Image`](h
 <Image 
   fill 
   src="/example.png"
-  sizes={(max-width: 767px) 100vw, (max-width: 1365px) 50vw, 33vw}
+  sizes="(max-width: 767px) 100vw, (max-width: 1365px) 50vw, 33vw"
 />
 ```
 
