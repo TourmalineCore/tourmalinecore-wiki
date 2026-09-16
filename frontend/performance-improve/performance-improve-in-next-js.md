@@ -2,6 +2,7 @@
 
 ## Navigation
 - [Diagnostic Tools](#diagnostic-tools)
+- [GetStaticProps vs GetServerSideProps](#getstaticprops-vs-getserversideprops)
 - [Images](#images)
 - [Fonts](#fonts)
 - [Scripts](#scripts)
@@ -14,6 +15,17 @@
 - Lighthouse.
 - The Performance tab in developer tools. You can find detailed instructions on how to use it [here](https://www.debugbear.com/blog/lcp-request-discovery).
 - The website [WebPageTest](https://www.webpagetest.org), where you can run performance tests on your site and get different metrics. You can also check if there are any blocking scripts.
+- Package [@next/bundle-analyzer](https://www.npmjs.com/package/@next/bundle-analyzer) allows you to analyze the project bundle and see heavy libraries or scripts that may affect the site's performance.
+
+## GetStaticProps vs GetServerSideProps
+Use [`getStaticProps (SSG) + ISR (revalidate)`](https://nextjs.org/docs/pages/building-your-application/data-fetching/get-static-props) for pages that don't change every second (articles, catalogs, static pages). This helps you get the lowest TTFB (Time to First Byte) and reduce the load on the server.
+
+If the data comes from a CMS, don't forget to set the [`revalidate`](https://nextjs.org/docs/pages/guides/incremental-static-regeneration#on-demand-revalidation-with-revalidatepath) option and specify the time in seconds after which Next.js will rebuild the page in the background (make a request to the CMS for new data). 
+
+Without `revalidate`, the page is generated once during the build and never updates again — changes in the CMS won't appear until the next deploy.
+
+Use [`getServerSideProps (SSR)`](https://nextjs.org/docs/pages/building-your-application/data-fetching/get-server-side-props) only when the data needs to be up to date on every page load (shopping cart, dashboard). SSR increases TTFB (Time to First Byte)
+by the time it takes to run all requests on the server — the slower the CMS/database, the worse the TTFB.
 
 ## Images
 For most images on the website, it is recommended to use the Next.js [`Image`](https://nextjs.org/docs/pages/api-reference/components/image) tag. It automatically optimizes images: it converts them to a modern format, adjusts them to the device screen size, and has lazy loading (this is the default setting of the tag, so you don't need to add it manually). With lazy loading, the image starts loading only after it enters the viewport.
