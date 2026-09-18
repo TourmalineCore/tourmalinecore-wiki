@@ -1,4 +1,4 @@
-# Performance improve in Next.js
+# Performance Improvements in Next.js
 
 ***This document is focused on `Pages router`, and some sections will not be relevant for the `App router`.***
 
