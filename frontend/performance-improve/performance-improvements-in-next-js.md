@@ -2,12 +2,13 @@
 
 ***This document is focused on `Pages router`, and some sections will not be relevant for the `App router`.***
 
-## Navigation
+## Overview
 - [Diagnostic Tools](#diagnostic-tools)
 - [GetStaticProps vs GetServerSideProps](#getstaticprops-vs-getserversideprops)
 - [Images](#images)
 - [Fonts](#fonts)
 - [Scripts](#scripts)
+- [Navigation (Link)](#navigation-link)
 - [Dynamic imports](#dynamic-imports)
 - [Installing Dependencies](#installing-dependencies)
 
@@ -50,6 +51,8 @@ For most images on the website, it is recommended to use the Next.js [`Image`](h
 - Use the [`sizes`](https://nextjs.org/docs/pages/api-reference/components/image#sizes) property for images that use the [`fill`](https://nextjs.org/docs/pages/api-reference/components/image#fill) property. This helps the browser choose the right image size based on the `sizes` settings.
 
 ```js
+import Image from "next/image";
+
 <Image 
   fill 
   src="/example.png"
@@ -75,6 +78,22 @@ To add third-party scripts, use the Next.js [`Script`](https://nextjs.org/docs/p
 
 In all other cases, it is recommended to keep the default loading behavior with the [`afterInteractive`](https://nextjs.org/docs/pages/api-reference/components/script#afterinteractive) strategy.
 
+## Navigation (Link)
+For internal navigation, always use the Next.js [`Link`](https://nextjs.org/docs/pages/api-reference/components/link) component instead of standard HTML `<a>` tags. This enables client-side routing, preventing full page reloads and significantly improving the perceived performance of your site.
+
+**When to disable prefetching**
+Use [`prefetch={false}`](https://nextjs.org/docs/pages/api-reference/components/link#prefetch) for links that are unlikely to be clicked or exist in large quantities (e.g., footer links, large catalogs, pagination, or sidebar menus with dozens of items). This prevents unnecessary background requests, saving bandwidth and reducing server load. Note that with `prefetch={false}`, Next.js will still prefetch on hover.
+
+**External links**
+Do not use `next/link` for external URLs. Use a standard `<a>` tag with `rel="noopener noreferrer"` for security and to avoid interfering with Next.js routing.
+
+**Example:**
+```js
+import Link from 'next/link'
+
+<Link href="/about">About Us</Link>
+```
+
 ## Dynamic imports
 Dynamic imports help reduce the size of the initial page load and speed up your website without losing functionality. You should use dynamic imports selectively — do not use them everywhere, as this can negatively affect the user experience.
 
@@ -89,6 +108,8 @@ Dynamic imports help reduce the size of the initial page load and speed up your 
 
 **Example of a dynamic import:**
 ```js
+import dynamic from "next/dynamic";
+
 const Modal = dynamic(
   () => import('@/components/Modal').then((component) => component.Modal),
   {
