@@ -48,7 +48,10 @@ For most images on the website, it is recommended to use the Next.js [`Image`](h
 - Use the [`loading="eager"`](https://nextjs.org/docs/pages/api-reference/components/image#loading) property for images inside modals or popups. This allows such images to start loading as soon as they appear in the DOM tree.
 - Control the caching time for optimized images (this only affects images added through the Image component) using the [`minimumCacheTTL`](https://nextjs.org/docs/pages/api-reference/components/image#minimumcachettl) property.
 - It is recommended to use conversion to webp and not to use conversion to avif [see here](https://nextjs.org/docs/pages/api-reference/components/image#formats). Although the avif format compresses about 20% more, it uses a lot of system resources and takes about 50% more time compared to webp. We have already had a bad experience with using avif on a corporate website. When opening a page with many images, the site crashed because the virtual machine where it was hosted did not have enough resources.
-- Use the [`sizes`](https://nextjs.org/docs/pages/api-reference/components/image#sizes) property for images that use the [`fill`](https://nextjs.org/docs/pages/api-reference/components/image#fill) property. This helps the browser choose the right image size based on the `sizes` settings.
+- Use the [`sizes`](https://nextjs.org/docs/pages/api-reference/components/image#sizes) property for images that use the [`fill`](https://nextjs.org/docs/pages/api-reference/components/image#fill) property. This helps the browser choose the right image size based on the `sizes` settings
+- Use the [`placeholder="blur"`](https://nextjs.org/docs/pages/api-reference/components/image#placeholder) property to show a low-resolution, blurred version of the image while the full image is loading. This significantly reduces Cumulative Layout Shift (CLS) and improves perceived performance. 
+  - For **local images**, Next.js automatically generates the `blurDataURL` if you import the image statically (e.g., `import testImage from './test-image.png'`).
+  - For **remote images**, you must provide the `blurDataURL` manually (as a base64 string). You can generate this on the server.
 
 ```js
 import Image from "next/image";
