@@ -20,13 +20,18 @@
 - Package [@next/bundle-analyzer](https://www.npmjs.com/package/@next/bundle-analyzer) allows you to analyze the project bundle and see heavy libraries or scripts that may affect the site's performance.
 
 ## GetStaticProps vs GetServerSideProps
-Use [`getStaticProps (SSG) + ISR (revalidate)`](https://nextjs.org/docs/pages/building-your-application/data-fetching/get-static-props) for pages that don't change every second (articles, catalogs, static pages). This helps you get the lowest TTFB (Time to First Byte) and reduce the load on the server.
 
-If the data comes from a CMS, don't forget to set the [`revalidate`](https://nextjs.org/docs/pages/guides/incremental-static-regeneration#on-demand-revalidation-with-revalidatepath) option and specify the time in seconds after which Next.js will rebuild the page in the background (make a request to the CMS for new data). 
+[`getServerSideProps`](https://nextjs.org/docs/pages/building-your-application/data-fetching/get-server-side-props) and [`getStaticProps`](https://nextjs.org/docs/pages/building-your-application/data-fetching/get-static-props) — these are two key functions for preloading data in Next.js (they are used only in the Pages Router). They are needed to load data on the server side and pass it to components as props before the page is sent to the browser. This is very important for SEO (search engines see ready HTML with content right away) and for security (you can hide secret keys or the server domain).
+
+The difference between them is that `getStaticProps` fetches the data at build time, while `getServerSideProps` fetches the data on every user request.
+
+Use `getStaticProps + ISR (revalidate)` for pages that don't change every second (articles, catalogs, static pages). This helps you get the lowest TTFB (Time to First Byte) and reduce the load on the server.
+
+If the data comes from a CMS, don't forget to set the `revalidate` option and specify the time in seconds after which Next.js will rebuild the page in the background (make a request to the CMS for new data). 
 
 Without `revalidate`, the page is generated once during the build and never updates again — changes in the CMS won't appear until the next deploy.
 
-Use [`getServerSideProps (SSR)`](https://nextjs.org/docs/pages/building-your-application/data-fetching/get-server-side-props) only when the data needs to be up to date on every page load (shopping cart, dashboard). SSR increases TTFB (Time to First Byte)
+Use `getServerSideProps` only when the data needs to be up to date on every page load (shopping cart, dashboard). SSR increases TTFB (Time to First Byte)
 by the time it takes to run all requests on the server — the slower the CMS/database, the worse the TTFB.
 
 ## Images
