@@ -44,7 +44,7 @@ Browsers follow the **Same-Origin Policy**: JavaScript that runs on a page of on
 
 It is important to understand what CORS does:
 - CORS is checked by the **browser**. It does not block requests from curl, Postman or from another server.
-- CORS does not let JavaScript **read the response**, but it does not stop the request from **being sent**. "Simple" requests (`GET`, `HEAD`, form `POST`) will reach the server anyway. For other requests (`PUT`, `DELETE`, custom headers) the browser first sends a **preflight** `OPTIONS` request and checks the CORS headers it gets back.
+- CORS does not let JavaScript **read the response**, but it does not stop the request from **being sent**. "Simple" requests (`GET`, form `POST`) will reach the server anyway. For other requests (`PUT`, `DELETE`, custom headers) the browser first sends a **preflight** `OPTIONS` request and checks the CORS headers it gets back.
 - CORS headers are set by the **server**. The UI server headers only decide who can read the resources of the UI itself through fetch/XHR. If the UI calls an API on another domain, CORS must be set up **on the API side**.
 - CORS does not control normal embedding of our images, scripts and styles on other sites. If you need to limit this, use the `Cross-Origin-Resource-Policy` header.
 
@@ -303,7 +303,7 @@ class AppDocument extends Document {
 
 ## Subresource Integrity (SRI)
 
-The nonce allows our scripts, but if a third-party CDN is hacked, the script it serves will still run. **Subresource Integrity** protects from this: the browser calculates the hash of the loaded file and does not run it if the hash does not match the `integrity` attribute.
+The nonce allows our scripts, but if a third-party CDN is hacked, the script it serves will still run. Subresource Integrity protects from this: the browser calculates the hash of the loaded file and does not run it if the hash does not match the `integrity` attribute.
 
 ```html
 <script
