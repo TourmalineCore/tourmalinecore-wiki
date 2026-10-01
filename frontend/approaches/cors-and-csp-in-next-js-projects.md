@@ -363,6 +363,6 @@ Adding CSP to an existing site blocks everything that was not taken into account
 Security headers are easy to lose during refactoring or a framework update, so we cover them with [Playwright tests](https://github.com/TourmalineCore/pelican-ui/blob/master/playwright-tests/security-headers-tests/security-headers.spec.ts). The tests check headers not only on the HTML page, but also on JS, images and fonts. CSP is checked only if it is turned on. The test takes the expected nonce from `window.__NONCE__`.
 
 Besides automated tests, check by hand:
-- There are no CSP errors in the browser console on all page types. Later we will add an automated check that the console has no errors.
+- There are no CSP errors in the browser console on all page types. This can also be checked with automated tests for errors in the console, but at the time of writing we do not have such tests yet.
 - The nonce in the `Content-Security-Policy` header matches the `nonce` of the scripts on the page and changes after a reload. Compare with the page source code (View Page Source), because the browser hides the nonce value in the Elements panel.
 - Online scanners: [Mozilla HTTP Observatory](https://developer.mozilla.org/en-US/observatory), [Google CSP Evaluator](https://csp-evaluator.withgoogle.com/), where you can check the security coverage percentage of the site.
