@@ -318,9 +318,9 @@ The nonce allows our scripts, but if a third-party CDN is hacked, the script it 
 
 SRI works only for **external files with a fixed version**. The provider updates analytics loaders without changing the URL, and a hash would break them. For such scripts the risk of the provider being hacked stays, so there should be as few third-party scripts as possible.
 
-### Why we want to stop using hashes for inline scripts
+### How not to do it: hashes for inline scripts
 
-Right now in pelican-ui, the inline scripts of Yandex Metrica and the Gosuslugi widget get an `integrity` attribute with the hash of their content:
+Do not add an `integrity` attribute with the hash of the content to inline scripts:
 
 ```tsx
 // src/pages/_document.tsx
@@ -342,12 +342,10 @@ const yMetricHash = getHash({
 />
 ```
 
-But this check does not protect anything:
+This check does not protect anything:
 1. The browser ignores `integrity` and `crossOrigin` for these scripts without `src`.
 2. `getHash` calculates a hash that always matches.
 3. The inline script itself is in our code, and the provider cannot replace it because of CSP. The provider can only replace the external file that this script loads. We can only trust the security of the platform we load the script from.
-
-So `getHash` and the `integrity`/`crossOrigin` attributes on inline scripts are not needed, and we will remove them in the future.
 
 ## Development and rollout
 
