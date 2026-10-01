@@ -121,7 +121,7 @@ These headers are set in the same `headers()` as CORS:
 
 ## Content Security Policy (CSP)
 
-**Content Security Policy** is set with the `Content-Security-Policy` HTTP header and decides which content sources (scripts, styles, images, etc.) are allowed on the page. It is an extra level of protection from **XSS** and from loading harmful resources: even if an attacker adds code to the page, the browser will not run it.
+**Content Security Policy** is set with the `Content-Security-Policy` HTTP header and decides which content sources (scripts, styles, images, etc.) are allowed on the page. It is an extra level of protection from **XSS** (someone else's script runs on our page) and from loading harmful resources: even if an attacker adds code to the page, the browser will not run it.
 
 ### Directives
 
