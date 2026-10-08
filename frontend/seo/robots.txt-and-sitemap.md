@@ -1,5 +1,26 @@
 # Robots.txt and Sitemap
 
+## Contents 
+- [Testing tools](#testing-tools)
+- [Why do you need robots.txt and sitemap.xml files?](#why-do-you-need-robotstxt-and-sitemapxml-files)
+- [Robots.txt](#robotstxt)
+  - [Robots.txt syntax](#robotstxt-syntax)
+    - [User-agent](#user-agent)
+    - [Disallow](#disallow)
+    - [Allow](#allow)
+  - [How to check that robots.txt works](#how-to-check-that-robotstxt-works)
+  - [Sitemap](#sitemap)
+  - [Host](#host)
+- [Sitemap.xml](#sitemapxml)
+  - [Structure of sitemap.xml](#structure-of-sitemapxml)
+  - [Tag descriptions](#tag-descriptions)
+  - [Recommendations for setting priorities](#recommendations-for-setting-priorities)
+  - [Sitemap limits](#sitemap-limits)
+
+## Testing tools
+- [Google Search Console](https://search.google.com/search-console/about) 
+- [Yandex.Webmaster](https://webmaster.yandex.ru/welcome/)
+
 ## Why do you need robots.txt and sitemap.xml files?
 
 The robots.txt and sitemap.xml files play an important role in optimizing a website for search engines. These files help search engine robots index your site correctly, which affects how the site's pages appear in search results.
@@ -8,11 +29,11 @@ The robots.txt and sitemap.xml files play an important role in optimizing a webs
 
 Robots.txt is just a text file that helps search engine robots understand which pages should be indexed and which ones should not.
 
-**Robots.txt syntax**
+### Robots.txt syntax
 
 The file is built on several key directives.
 
-**User-agent**
+#### User-agent
 
 This shows which robot the rules are meant for.
 ```
@@ -23,7 +44,7 @@ This shows which robot the rules are meant for.
 - User-agent: YandexBot – only for Yandex.
 ```
 
-**Disallow**
+#### Disallow
 
 This blocks scanning of the specified path.
 ```
@@ -36,7 +57,7 @@ This blocks scanning of the specified path.
 
 Please note: a slash / at the end of the path means the whole directory. Without a slash, any URL that starts with the given string is blocked.
 
-**Allow**
+#### Allow
 
 This allows scanning inside a blocked directory. It is useful for exceptions.
 
@@ -46,7 +67,11 @@ Disallow: /catalog/
 Allow: /catalog/main-page/
 ```
 
-**Sitemap**
+### How to check that robots.txt works
+
+You need to add `/robots.txt` to the URL after the domain, for example `https://example.com/robots.txt`. After that, you should see the contents of robots.txt.
+
+### Sitemap
 
 This shows the robot the path to the site map. It is placed on a separate line outside the User-agent blocks.
 
@@ -57,7 +82,7 @@ Disallow: /components
 Sitemap: https://example.com/sitemap.xml
 ```
 
-**Host**
+### Host
 
 An outdated field that you don't have to include.
 
@@ -73,7 +98,7 @@ A sitemap is especially useful when:
 
 - The site is new and has few external links.
 
-**Structure of sitemap.xml**
+### Structure of sitemap.xml
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -93,7 +118,7 @@ A sitemap is especially useful when:
 </urlset>
 ```
 
-**Tag descriptions:**
+### Tag descriptions:
 
 - loc – the full URL of the page. Required tag *.
 
@@ -103,7 +128,7 @@ A sitemap is especially useful when:
 
 - priority – the priority from 0.0 to 1.0 relative to other pages on the site. It doesn't affect rankings, but it hints to the robot what to scan first.
 
-**Recommendations for setting priorities:**
+### Recommendations for setting priorities:
 
 Home page (/) – 1.0
 
@@ -114,3 +139,21 @@ Articles, products, subcategories – 0.6 – 0.7
 Secondary pages (blog, FAQ, contacts) – 0.4 – 0.5
 
 Technical and service pages – 0.1 – 0.3
+
+### Sitemap limits
+
+A single sitemap.xml file can contain no more than 50,000 URLs and weigh no more than 50 MB. If the site is large, you need to use an index file. This is an XML file that links to several regular sitemaps.
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap>
+    <loc>https://example.com/sitemap1.xml.gz</loc>
+    <lastmod>2026-08-15</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://example.com/sitemap2.xml.gz</loc>
+    <lastmod>2026-06-05</lastmod>
+  </sitemap>
+</sitemapindex>
+```
