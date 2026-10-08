@@ -2,7 +2,7 @@
 
 ***This document is focused on `Pages router`, and some sections will not be relevant for the `App router`.***
 
-## Overview
+## Contents
 - [Diagnostic Tools](#diagnostic-tools)
 - [GetStaticProps vs GetServerSideProps](#getstaticprops-vs-getserversideprops)
 - [Images](#images)
