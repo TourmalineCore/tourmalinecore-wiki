@@ -12,7 +12,7 @@ Here we describe the approach we follow in Next.js projects. An example implemen
 5. [Subresource Integrity (SRI)](#subresource-integrity-sri)
 6. [Development and rollout](#development-and-rollout)
 7. [Testing](#testing)
-8. [Pros and cons](#pros-and-cons)
+8. [Checklist for a new Next.js project](#checklist-for-a-new-nextjs-project)
 
 ## Where headers are set
 
@@ -366,3 +366,15 @@ Besides automated tests, check by hand:
 - There are no CSP errors in the browser console on all page types. This can also be checked with automated tests for errors in the console, but at the time of writing we do not have such tests yet.
 - The nonce in the `Content-Security-Policy` header matches the `nonce` of the scripts on the page and changes after a reload. Compare with the page source code (View Page Source), because the browser hides the nonce value in the Elements panel.
 - Online scanners: [Mozilla HTTP Observatory](https://developer.mozilla.org/en-US/observatory), [Google CSP Evaluator](https://csp-evaluator.withgoogle.com/), where you can check the security coverage percentage of the site.
+
+## Checklist for a new Next.js project
+
+1. Write Playwright tests for the security headers before the implementation ([Testing](#testing)). Run them on an environment with `CSP_ENABLED=true`. At first the tests fail.
+2. In `headers()` in `next.config.mjs`, add the CORS headers ([CORS](#cors)).
+3. In the same `headers()`, add `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy` and `Permissions-Policy` ([Other security headers](#other-security-headers)).
+4. Add `src/common/middleware/setCspHeaders.ts`, which creates the nonce and sets the CSP header ([Our policy](#our-policy)).
+5. Add `src/middleware.ts`, which calls `setCspHeaders` when `CSP_ENABLED=true`. Its `matcher` must skip API, static files and prefetch requests ([Creating the nonce in middleware](#creating-the-nonce-in-middleware)).
+6. In `src/pages/_document.tsx`, read the nonce from the `x-nonce` header and pass it to `<Head>`, `<NextScript>`, every `<Script>` and `window.__NONCE__`.
+7. Add the environment variables for every environment: `CORS_ORIGIN`, `CSP_ENABLED` and `CSP_*_SRC_URLS` ([Where headers are set](#where-headers-are-set)). Locally set `CSP_ENABLED=false`, on all deployed environments set `CSP_ENABLED=true`.
+8. For external files with a fixed version, add `integrity` and `crossorigin="anonymous"`. Do not add them to inline scripts ([Subresource Integrity (SRI)](#subresource-integrity-sri)).
+9. Check that all tests pass and do the manual checks ([Testing](#testing)).
