@@ -208,7 +208,7 @@ module.exports = {
 
 You can find the rest of the settings [here](https://github.com/iamvishnusankar/next-sitemap#configuration-options)
 
-3. Add the script `"postbuild": "next-sitemap"` to package.json
+3. Add the script `"postbuild": "next-sitemap"` to package.json.
 
 ```json
 "scripts": {
