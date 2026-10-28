@@ -180,7 +180,7 @@ module.exports = {
   // e.g.: ['/page-0', '/page-*', '/private/*'].
   exclude: [
     '/**/components',
-    '/**/components/*',
+    '/**/components/**',
     '/**/404',
     '/**/500',
   ],
