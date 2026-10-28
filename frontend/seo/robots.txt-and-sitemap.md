@@ -17,6 +17,7 @@
   - [Recommendations for setting priorities](#recommendations-for-setting-priorities)
   - [Sitemap limits](#sitemap-limits)
 - [Setting up automatic generation of robots.txt and sitemap.xml in Next.js](#setting-up-automatic-generation-of-robotstxt-and-sitemapxml-in-nextjs)
+- [Setting up Sitemap in Strapi](#setting-up-sitemap-in-strapi)
 
 ## Testing tools
 - [Google Search Console](https://search.google.com/search-console/about) 
@@ -218,3 +219,56 @@ You can find the rest of the settings [here](https://github.com/iamvishnusankar/
 ```
 
 Run the `build`, after it finishes, `robots.txt` and `sitemap.xml` should be generated in the public folder.
+
+
+## Setting up Sitemap in Strapi
+
+If your CMS has functionality for creating dynamic pages, then you probably need to make sure that the pages created in the CMS end up in the sitemap.
+
+1. Install the npm package [strapi-5-sitemap-plugin](https://www.npmjs.com/package/strapi-5-sitemap-plugin?spm=a2ty_o01.29997173.0.0.6415c92114DxPP)
+
+2. Enable the plugin in the CMS settings; to do this, add the following lines to the `/config/plugins.ts` file:
+
+```js
+seo: {
+  enabled: true,
+}
+```
+
+3. After that, sitemap settings should appear in the CMS interface.
+
+![strapi-sitemap-settings](/frontend/images/strapi-sitemap-settings.png)
+
+Here you can set the site's base URL.
+
+![strapi-sitemap-base-url](/frontend/images/strapi-sitemap-base-url.png)
+
+Configuration for collections, for example for dynamic pages. All records created in the `navigations` collection will end up in the sitemap. For example, you created a page and set the value `/talks` in the `link` field. Then `https://www.tourmalinecore.com/talks` will be added to the sitemap, where `https://www.tourmalinecore.com` is the specified baseUrl.
+
+When creating, you can also specify parameters for the [sitemap](#tag-descriptions).
+
+![strapi-sitemap-collection-types](/frontend/images/strapi-sitemap-collection-types.png)
+
+Besides collections, you can add your own URLs, for example the home page.
+Add custom URLs to the sitemap through the Strapi interface only if these pages are not generated automatically on the Next.js side (for example, via next-sitemap).
+
+![strapi-sitemap-custom-urls](/frontend/images/strapi-sitemap-custom-urls.png)
+
+4. After that, connect the dynamic sitemap to Next.js; the endpoint `api/strapi-5-sitemap-plugin/sitemap.xml` in the CMS will return the sitemap. In the `next-sitemap.config.js` file, this is done through the `additionalSitemaps` array.
+
+The example configuration below uses the path `/api/get-sitemap`. This is a proxy route on the Next.js side that internally requests the sitemap from the CMS. This approach allows you to hide the real CMS address from external users, thereby making it more secure.
+
+However, if hiding the CMS address is not a security requirement for your project, you can specify the direct URL of the Strapi plugin endpoint (for example, `https://cms.yourdomain.com/api/strapi-5-sitemap-plugin/sitemap.xml`) directly in `additionalSitemaps` or in the `robots.txt` file itself.
+
+**Example in next-sitemap.config.js**
+```js
+robotsTxtOptions: {
+  additionalSitemaps: [
+    // Option 1: via the Next.js proxy
+    `https://tourmalinecore.com/api/get-sitemap`,
+    
+    // Option 2: directly to the CMS (if acceptable)
+    // `https://cms.yourdomain.com/api/strapi-5-sitemap-plugin/sitemap.xml`
+  ],
+}
+```
