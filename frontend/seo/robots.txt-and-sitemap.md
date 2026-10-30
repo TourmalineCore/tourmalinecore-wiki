@@ -179,10 +179,14 @@ module.exports = {
   // Array of relative paths (wildcard pattern supported) to exclude from listing on sitemap.xml or sitemap-*.xml.
   // e.g.: ['/page-0', '/page-*', '/private/*'].
   exclude: [
-    '/**/components',
-    '/**/components/**',
-    '/**/404',
-    '/**/500',
+    `components`,
+    `components/**`,
+    `*/components`,
+    `*/components/**`,
+    `404`,
+    `*/404`
+    `500`,
+    `*/500`,
   ],
   // Settings for generating robots.txt
   robotsTxtOptions: {
