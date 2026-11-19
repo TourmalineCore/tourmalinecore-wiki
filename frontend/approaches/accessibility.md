@@ -1,0 +1,94 @@
+# Accessibility
+Accessibility is not just about people who are blind or have low vision. It embraces a wide range of disabilities, including motor, cognitive, and auditory impairments, as well as situational limitations (e.g., using a device in bright sunlight). Everyone, including users with temporary disabilities (such as a broken arm) or permanent conditions, benefits from a site that functions without a mouse.
+
+Developing an accessible website involves proper semantic HTML structure, correct tagging, and logical nesting — technical details that are often overlooked during standard development but are essential for assistive technology users.
+
+## Accessible Website vs Version for People with Visual Impairments
+Creating a single, accessible main website based on modern WCAG princples is of high importaince and we are expected to consider accessibility requirements on all our projects wherever possible.
+
+We discarded the idea of creating separate versions for people with visual impairments (VVI). VVI provides adjustable fonts and colors but excludes users with motor or other disabilities and is often unused because many such users rely on screen readers.
+
+We prioritize making the main site accessible for all, providing responsive layouts, high contrast, and clear texts. It is the best practice, being inclusive and legally sufficient. A separate VVI is outdated, potentially discriminatory, and provides an incomplete experience. Following WCAG ensures access for everyone, including those with temporary limitations.
+
+## WCAG-based Guidelines for Developers
+
+### Interaction with website
+- Ability to navigate via keyboard (Tab, Enter); all interactive elements can receive visible focus.
+    - Visible Focus
+    - Logical Focus Order
+    - All controls accessible via keyboard
+    - Ability to skip navigation (skip link). The "skip to main content" button is hidden by default but becomes visible and in focus upon the first press of the Tab key. Pressing Enter then moves the focus directly to the main content, bypassing, for example, the navigation.
+
+    *Step 1. Press Tab*
+
+    *Step 2. Press Enter*
+
+    - No keyboard traps (focus traps).
+
+- Compatibility with screen readers; proper labels for all site elements are necessary.
+
+#### Focus Management for Dynamic Content
+When opening a modal window, focus must move inside it and be trapped there until it is closed. After closing, focus must return to the triggering element. 
+
+When content updates dynamically (e.g., form submission message, loaded component), focus must be programmatically moved to the new content or an alert role must be used to notify screen readers. Crucial for SPAs, modals, and AJAX.
+
+### Color
+- Avoid using color as the only visual means of conveying information or indicating an action; color should be combined with other identifiers (icons, explanatory text).
+![alt text](/frontend/images/no-using-color-only-for-info.png)
+![alt text](/frontend/images/use-text-for-info.png)
+
+- Sufficient color contrast.
+
+### Text
+- Regular text and text in images must have a contrast ratio of at least 4.5:1 (Level AA), at least 7:1 (Level AAA).
+![alt text](/frontend/images/color-ratio.png)
+- Font size can be increased up to 200% natively in the browser without causing a horizontal scrollbar (ensured by adaptive layout).
+- A line should not exceed 80 characters (Level AAA). This practice from the era of small monitors aimed to improve code readability.
+- Justified text alignment is prohibited (Level AAA). It is less readable than left-aligned text due to uneven word spacing.
+- Line spacing should be at least 1.5 times the font size; paragraph spacing at least 2 times the font size; letter spacing at least 0.12 times the font size; word spacing at least 0.16 times the font size. (Level AA)
+- Minimum line spacing of at least 1.5 and paragraph spacing at least 1.5 times greater (Level AAA).
+- Text in images should be used only for decoration.
+- Text on buttons and key elements should be informative.
+- All input fields must have meaningful text labels.
+- Font must be legible.
+
+### Non-text Content
+- Controls must have a description of their purpose (e.g., **title** attribute for links).
+- Media content must be accompanied by synchronized captions.
+- Content created for decorative purposes should be ignored by screen readers (images without semantic meaning should have an empty **alt=''** attribute).
+- For CAPTCHA, its purpose should be described. Alternative forms of CAPTCHA accessible through other means of perception must be provided.
+- Images and links must have alternative descriptions (**alt=""**).
+
+### Semantic Markup and Page Structure
+- Appropriate semantic tags must be used.
+- Page division into regions (W3C landmarks).
+- Markup must be valid.
+- Page has a **title**.
+- One **h1** heading (mandatory).
+- Logical heading structure (h1 -> h2 -> h3).
+- Explicitly connect labels to inputs using **for** and **id**, group related form elements with **fieldset** and **legend**.
+
+### Labels
+- Present for all interactive controls.
+- Programmatically associated with elements.
+- Concise.
+- Unique.
+- Visible and located near the control.
+
+Use native HTML elements over ARIA where possible. ARIA is good for fixing semantic gaps in custom widgets (e.g., complex menus, tabs), but should not be used to replace proper HTML. 
+If ARIA is used, all aria-attributes must be correct, complete, and managed with JavaScript (e.g., aria-expanded, aria-controls).
+
+### Shift-Left Testing
+Accessibility must be integrated from the start and verified throughout development, not just at the end.
+
+#### Testing Methods
+1) Automated Testing
+
+Use tools like Axe, WAVE, or Lighthouse. Mind that automated tools are necessary but not enough.
+
+2) Manual keyboard testing
+
+The entire site must be navigable with only a keyboard (Tab, Shift+Tab, Enter, Space, Arrow keys).
+Screen reader testing: test with at least one screen reader (e.g., NVDA, VoiceOver).
+
+Test with browser zoom at 200%.
